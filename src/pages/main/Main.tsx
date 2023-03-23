@@ -1,17 +1,15 @@
-import { useEffect } from 'react';
 import Button from '../../components/Button';
 import Title from '../../components/Title';
-import MainBgCanvas from './canvas/MainBgCanvas';
 import SC from './main.styles';
 
 const Main = () => {
-  useEffect(() => {
-    new MainBgCanvas();
-  }, []);
+  //   useEffect(() => {
+  //     new MainBgCanvas();
+  //   }, []);
 
   return (
     <SC.Container id="main-page">
-      <SC.BgCanvas id="main-bg-canvas" />
+      {/* <SC.BgCanvas id="main-bg-canvas" /> */}
       <SC.Contents>
         <SC.TitleArea>
           <Title style={{ position: 'relative', top: '50%' }}>
@@ -27,7 +25,7 @@ const Main = () => {
         </SC.TitleArea>
         <SC.ButtonsArea>
           <Button style={{ marginBottom: '0.5em' }}>START</Button>
-          <Button>HELP</Button>
+          {/* <Button>HELP</Button> */}
         </SC.ButtonsArea>
       </SC.Contents>
     </SC.Container>

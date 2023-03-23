@@ -15,7 +15,7 @@ const SC = {
   Contents: styled.section`
     min-width: 600;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    /* background-color: rgba(0, 0, 0, 0.5); */
   `,
   TitleArea: styled.div`
     height: 40%;
