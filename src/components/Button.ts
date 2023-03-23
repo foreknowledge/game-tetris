@@ -3,14 +3,14 @@ import styled from 'styled-components';
 const Button = styled.button`
   display: block;
   margin: auto;
-  width: 280px;
+  width: 250px;
 
   border: 5px solid var(--text-color);
   border-radius: 20px;
 
   font-size: var(--font-medium);
   color: var(--text-color);
-  background: none;
+  background: var(--primary-color);
 
   cursor: pointer;
 

@@ -10,13 +10,12 @@ const Main = () => {
           <Title style={{ position: 'relative', top: '50%' }}>
             PLAY
             <span> </span>
-            <span style={{ color: 'var(--block-color0)' }}>T</span>
-            <span style={{ color: 'var(--block-color1)' }}>E</span>
-            <span style={{ color: 'var(--block-color2)' }}>T</span>
-            <span style={{ color: 'var(--block-color3)' }}>R</span>
-            <span style={{ color: 'var(--block-color4)' }}>I</span>
-            <span style={{ color: 'var(--block-color5)' }}>S</span>
-            <span style={{ color: 'var(--block-color6)' }}>!</span>
+            <span style={{ color: 'red' }}>T</span>
+            <span style={{ color: 'orange' }}>E</span>
+            <span style={{ color: 'yellow' }}>T</span>
+            <span style={{ color: 'green' }}>R</span>
+            <span style={{ color: 'skyblue' }}>I</span>
+            <span style={{ color: 'purple' }}>S</span>!
           </Title>
         </SC.TitleArea>
         <SC.ButtonsArea>

@@ -10,17 +10,9 @@
   --sub-color: #1cd6ce;
   --accent-color: #fedb39;
 
-  --block-color0: #d64e12;
-  --block-color1: #f9a52c;
-  --block-color2: #efdf48;
-  --block-color3: #8bd346;
-  --block-color4: #60dbe8;
-  --block-color5: #167bd8;
-  --block-color6: #9b5fe0;
-
   --font-large: 64px;
-  --font-medium: 48px;
-  --font-small: 40px;
+  --font-medium: 40px;
+  --font-small: 28px;
 }
 
 * {
