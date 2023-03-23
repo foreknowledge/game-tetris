@@ -1,10 +1,17 @@
+import { useEffect } from 'react';
 import Button from '../../components/Button';
 import Title from '../../components/Title';
+import MainBgCanvas from './canvas/MainBgCanvas';
 import SC from './main.styles';
 
 const Main = () => {
+  useEffect(() => {
+    new MainBgCanvas();
+  }, []);
+
   return (
-    <SC.Container>
+    <SC.Container id="main-page">
+      <SC.BgCanvas id="main-bg-canvas" />
       <SC.Contents>
         <SC.TitleArea>
           <Title style={{ position: 'relative', top: '50%' }}>
