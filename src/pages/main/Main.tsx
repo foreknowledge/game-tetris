@@ -1,7 +1,11 @@
 import Title from '../../components/Title';
 import SC from './main.styles';
 
-const Main = () => {
+interface MainProps {
+  onGameStart: () => void;
+}
+
+const Main = ({ onGameStart }: MainProps) => {
   //   useEffect(() => {
   //     new MainBgCanvas();
   //   }, []);
@@ -23,7 +27,7 @@ const Main = () => {
           </Title>
         </SC.TitleArea>
         <SC.ButtonsArea>
-          <SC.Button>START</SC.Button>
+          <SC.Button onClick={onGameStart}>START</SC.Button>
           {/* <SC.Button>HELP</SC.Button> */}
         </SC.ButtonsArea>
       </SC.Contents>
