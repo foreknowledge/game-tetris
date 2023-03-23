@@ -16,6 +16,7 @@ const SC = {
     width: 320px;
     height: 640px;
     border: solid 4px white;
+    background-color: var(--primary-color);
   `,
   BackButton: styled(Button)`
     padding-left: 0.5em;
