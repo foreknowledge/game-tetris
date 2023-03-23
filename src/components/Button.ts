@@ -15,8 +15,8 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: var(--sub-color);
-    border-color: var(--sub-color);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
   }
 `;
 
