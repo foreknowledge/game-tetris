@@ -10,7 +10,7 @@ const Button = styled.button`
 
   font-size: var(--font-medium);
   color: var(--text-color);
-  background: var(--primary-color);
+  background: none;
 
   cursor: pointer;
 

@@ -28,6 +28,7 @@ const SC = {
   Button: styled(Button)`
     width: 250px;
     margin-bottom: 0.5em;
+    background-color: var(--primary-color);
   `,
 };
 
