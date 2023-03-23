@@ -6,12 +6,17 @@ interface MainProps {
 }
 
 const Main = ({ onGameStart }: MainProps) => {
-  //   useEffect(() => {
-  //     new MainBgCanvas();
-  //   }, []);
+  // let { current: bgCanvas } = useRef<MainBgCanvas>();
+
+  // useEffect(() => {
+  //   if (!bgCanvas) {
+  //     // React.StrictMode에서도 인스턴스 한 번만 생성
+  //     bgCanvas = new MainBgCanvas();
+  //   }
+  // }, []);
 
   return (
-    <SC.Container id="main-page">
+    <SC.Container>
       {/* <SC.BgCanvas id="main-bg-canvas" /> */}
       <SC.Contents>
         <SC.TitleArea>

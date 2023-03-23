@@ -3,7 +3,6 @@ import TetrominoView from '../../../view/tetromino/TetrominoView';
 export default class MainBgCanvas {
   canvas = document.getElementById('main-bg-canvas') as HTMLCanvasElement;
   ctx = this.canvas.getContext('2d')!;
-  screen = document.getElementById('main-page')!;
 
   tetrominos: TetrominoView[] = [];
 
@@ -14,8 +13,8 @@ export default class MainBgCanvas {
   }
 
   resize() {
-    this.canvas.width = this.screen.clientWidth;
-    this.canvas.height = this.screen.clientHeight;
+    this.canvas.width = this.canvas.offsetWidth;
+    this.canvas.height = this.canvas.offsetHeight;
 
     this.init();
     this.animate();
