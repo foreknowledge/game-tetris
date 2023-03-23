@@ -1,4 +1,3 @@
-import Button from '../../components/Button';
 import Title from '../../components/Title';
 import SC from './main.styles';
 
@@ -24,8 +23,8 @@ const Main = () => {
           </Title>
         </SC.TitleArea>
         <SC.ButtonsArea>
-          <Button style={{ marginBottom: '0.5em' }}>START</Button>
-          {/* <Button>HELP</Button> */}
+          <SC.Button>START</SC.Button>
+          {/* <SC.Button>HELP</SC.Button> */}
         </SC.ButtonsArea>
       </SC.Contents>
     </SC.Container>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../../components/Button';
 
 const SC = {
   Container: styled.div`
@@ -13,7 +14,7 @@ const SC = {
     height: 100%;
   `,
   Contents: styled.section`
-    min-width: 600;
+    min-width: 600px;
     height: 100%;
     /* background-color: rgba(0, 0, 0, 0.5); */
   `,
@@ -23,6 +24,10 @@ const SC = {
   `,
   ButtonsArea: styled.div`
     margin-top: 2em;
+  `,
+  Button: styled(Button)`
+    width: 250px;
+    margin-bottom: 0.5em;
   `,
 };
 
