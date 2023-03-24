@@ -26,7 +26,7 @@ export default class TetrominoView {
   }
 
   draw() {
-    const matrix = this.tetromino.matrix;
+    const matrix = this.tetromino.getMatrix();
 
     this.ctx.beginPath();
     for (let j = 0; j < matrix.length; j++) {
