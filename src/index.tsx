@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 // 콘솔 테스트
 const tetris = new Tetris();
-tetris.print();
+tetris.gameStart();
 addEventListener('keydown', (e) => {
   switch (e.key) {
     case 'ArrowLeft':
@@ -29,6 +29,12 @@ addEventListener('keydown', (e) => {
       break;
     case 'z' || 'Z':
       tetris.rotateLeft();
+      break;
+    case 'Escape':
+      tetris.gamePause();
+      break;
+    case '1':
+      tetris.gameStart();
       break;
   }
   tetris.print();

@@ -10,6 +10,8 @@ const BOARD_H = 20;
 export default class Tetris {
   #board: Matrix;
   #tetromino: TetrominoBase;
+  speed = 1000;
+  timerId?: number;
 
   constructor() {
     this.#board = new Matrix(
@@ -22,6 +24,22 @@ export default class Tetris {
       x: Math.floor(BOARD_W / 2 - this.#tetromino.matrix.width / 2),
       y: 0,
     };
+
+    this.print();
+  }
+
+  gameStart() {
+    if (this.timerId) return;
+
+    this.timerId = setInterval(() => {
+      this.moveDown();
+      this.print();
+    }, this.speed);
+  }
+
+  gamePause() {
+    clearInterval(this.timerId);
+    this.timerId = undefined;
   }
 
   moveDown() {
