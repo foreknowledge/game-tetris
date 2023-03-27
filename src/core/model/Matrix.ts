@@ -29,7 +29,7 @@ export default class Matrix {
   #rotate(times: number) {
     const w = times % 2 ? this.width : this.height;
     const h = times % 2 ? this.height : this.width;
-    const newData = new Array(h).fill(new Array(w).fill(0));
+    const newData = Array.from(Array(h), () => Array(w).fill(0));
 
     for (let x = 0; x < w; x++) {
       for (let y = 0; y < h; y++) {
@@ -37,13 +37,13 @@ export default class Matrix {
           case 0:
             newData[y][x] = this.#data[y][x];
           case 1:
-            newData[y][x] = this.#data[x][w - 1 - y];
+            newData[y][x] = this.#data[h - 1 - x][y];
             break;
           case 2:
             newData[y][x] = this.#data[h - 1 - y][w - 1 - x];
             break;
           case 3:
-            newData[y][x] = this.#data[h - 1 - x][y];
+            newData[y][x] = this.#data[x][w - 1 - y];
             break;
         }
       }
