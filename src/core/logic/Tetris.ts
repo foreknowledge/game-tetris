@@ -34,6 +34,24 @@ export default class Tetris {
     this.timerId = undefined;
   }
 
+  gameOver() {
+    clearInterval(this.timerId);
+    this.timerId = undefined;
+
+    // Inform game is over.
+    console.log(`
+==========================
+    Game Over...
+==========================
+    `);
+
+    // Reset data
+    this.#board = new Matrix(
+      Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
+    );
+    this.#tetromino = genNewTetromino();
+  }
+
   moveDown() {
     this.#step({ dy: 1 });
   }
@@ -76,6 +94,11 @@ export default class Tetris {
 
       // 3. 새로운 tetromino 생성
       this.#tetromino = genNewTetromino();
+      if (isCollided(this.#board, this.#tetromino)) {
+        // 기존 board와 충돌한 경우 게임 오버
+        this.gameOver();
+        return;
+      }
     }
     printBoard(this.#board, this.#tetromino);
   }
