@@ -64,6 +64,10 @@ export default class Matrix {
   }
 
   print() {
-    console.log(this.#data.map((col) => col.join('\t')).join('\n'));
+    console.log(
+      this.#data
+        .map((col) => col.map((i) => (i === 0 ? '.' : i)).join(' '))
+        .join('\n')
+    );
   }
 }

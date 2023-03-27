@@ -14,18 +14,18 @@ import { Type } from '../type/tetromino.types';
 export default function genTetromino(type: Type): TetrominoBase {
   switch (type) {
     case 'Z':
-      return new TetrominoZ();
+      return new TetrominoZ(type);
     case 'L':
-      return new TetrominoL();
+      return new TetrominoL(type);
     case 'O':
-      return new TetrominoO();
+      return new TetrominoO(type);
     case 'S':
-      return new TetrominoS();
+      return new TetrominoS(type);
     case 'I':
-      return new TetrominoI();
+      return new TetrominoI(type);
     case 'J':
-      return new TetrominoJ();
+      return new TetrominoJ(type);
     case 'T':
-      return new TetrominoT();
+      return new TetrominoT(type);
   }
 }

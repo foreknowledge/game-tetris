@@ -1,11 +1,34 @@
 import { Pos } from '../type/coordinates.types';
+import { Type } from '../type/tetromino.types';
 import Matrix from './Matrix';
+import genTetromino from './TetrominoGenerator';
 
 export abstract class TetrominoBase {
+  type: Type;
   matrix: Matrix = new Matrix([]);
 
   // 외부에서 설정해 주는 값
   position: Pos = { x: -1, y: -1 };
+
+  constructor(type: Type) {
+    this.type = type;
+  }
+
+  rotateRight() {
+    this.matrix.rotateRight();
+  }
+
+  rotateLeft() {
+    this.matrix.rotateLeft();
+  }
+
+  duplicate(): TetrominoBase {
+    const newTetromino = genTetromino(this.type);
+    newTetromino.matrix = this.matrix.duplicate();
+    newTetromino.position = { ...this.position };
+
+    return newTetromino;
+  }
 }
 
 export class TetrominoZ extends TetrominoBase {
