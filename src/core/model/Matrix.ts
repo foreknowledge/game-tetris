@@ -18,6 +18,14 @@ export default class Matrix {
     this.#data[y][x] = val;
   }
 
+  getLine(y: number) {
+    return this.#data[y];
+  }
+
+  setLine(y: number, line: number[]) {
+    this.#data[y] = line;
+  }
+
   rotateRight(times: number = 1) {
     this.#rotate(times);
   }

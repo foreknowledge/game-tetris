@@ -7,6 +7,7 @@ import {
   genNewTetromino,
   isTransformAppliable,
   printBoard,
+  sweepLines,
 } from './logics';
 
 export default class Tetris {
@@ -66,12 +67,12 @@ export default class Tetris {
         if (val > 0) this.#board.set(pos.x + x, pos.y + y, val);
       });
 
-      // 2. 새로운 tetromino 생성
+      // 2. 완성 된 라인 지우기
+      sweepLines(this.#board);
+
+      // 3. 새로운 tetromino 생성
       this.#tetromino = genNewTetromino();
     }
     printBoard(this.#board, this.#tetromino);
   }
-
-  // 현재 board에서 완성된 line 제거
-  #sweepLines(board: Matrix) {}
 }

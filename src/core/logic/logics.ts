@@ -67,6 +67,26 @@ export function checkIsTouched(
   return false;
 }
 
+/**
+ * [board]에서 완성된 라인 sweeping
+ */
+export function sweepLines(board: Matrix) {
+  const compactData: number[][] = [];
+
+  for (let y = BOARD_H - 1; y >= 0; y--) {
+    const line = board.getLine(y);
+    if (line.includes(0)) {
+      compactData.push([...line]);
+    } else {
+      board.setLine(y, Array(BOARD_W).fill(0));
+    }
+  }
+
+  for (let i = 0; i < compactData.length; i++) {
+    board.setLine(BOARD_H - 1 - i, compactData[i]);
+  }
+}
+
 export function genNewTetromino(): TetrominoBase {
   const newOne = genTetromino(randomItem(allTypes));
   newOne.position = {
