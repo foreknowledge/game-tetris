@@ -37,5 +37,4 @@ addEventListener('keydown', (e) => {
       tetris.gameStart();
       break;
   }
-  tetris.print();
 });

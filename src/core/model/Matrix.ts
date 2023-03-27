@@ -48,6 +48,8 @@ export default class Matrix {
         }
       }
     }
+    this.width = w;
+    this.height = h;
     this.#data = newData;
   }
 

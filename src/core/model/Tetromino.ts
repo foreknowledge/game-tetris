@@ -1,4 +1,4 @@
-import { Pos } from '../type/coordinates.types';
+import { Pos, Transform } from '../type/coordinates.types';
 import { Type } from '../type/tetromino.types';
 import Matrix from './Matrix';
 import genTetromino from './TetrominoGenerator';
@@ -12,6 +12,13 @@ export abstract class TetrominoBase {
 
   constructor(type: Type) {
     this.type = type;
+  }
+
+  transform({ dx, dy, rotR, rotL }: Transform) {
+    if (dx) this.position.x += dx;
+    if (dy) this.position.y += dy;
+    if (rotR) this.rotateRight();
+    if (rotL) this.rotateLeft();
   }
 
   rotateRight() {
@@ -28,6 +35,20 @@ export abstract class TetrominoBase {
     newTetromino.position = { ...this.position };
 
     return newTetromino;
+  }
+
+  findFloorCoords(): Pos[] {
+    const floors: Pos[] = [];
+
+    outer: for (let x = 0; x < this.matrix.width; x++) {
+      for (let y = this.matrix.height - 1; y >= 0; y--) {
+        if (this.matrix.get(x, y) != 0) {
+          floors.push({ x, y });
+          continue outer;
+        }
+      }
+    }
+    return floors;
   }
 }
 

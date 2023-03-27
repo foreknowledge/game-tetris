@@ -2,6 +2,7 @@ import { randomItem } from '../../utils/random';
 import Matrix from '../model/Matrix';
 import { TetrominoBase } from '../model/Tetromino';
 import genTetromino from '../model/TetrominoGenerator';
+import { Transform } from '../type/coordinates.types';
 import { allTypes } from '../type/tetromino.types';
 
 const BOARD_W = 10;
@@ -15,17 +16,11 @@ export default class Tetris {
 
   constructor() {
     this.#board = new Matrix(
-      new Array(BOARD_H).fill(new Array(BOARD_W).fill(0))
+      Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
     );
 
-    this.#tetromino = genTetromino(randomItem(allTypes));
-    this.#tetromino.position = {
-      // Board 중간에서 시작
-      x: Math.floor(BOARD_W / 2 - this.#tetromino.matrix.width / 2),
-      y: 0,
-    };
-
-    this.print();
+    this.#tetromino = this.#genNewTetromino();
+    this.#print();
   }
 
   gameStart() {
@@ -33,7 +28,6 @@ export default class Tetris {
 
     this.timerId = setInterval(() => {
       this.moveDown();
-      this.print();
     }, this.speed);
   }
 
@@ -43,48 +37,49 @@ export default class Tetris {
   }
 
   moveDown() {
-    if (this.#isTransformable({ dy: 1 })) {
-      this.#tetromino.position.y += 1;
-    }
+    this.#step({ dy: 1 });
   }
 
   moveRight() {
-    if (this.#isTransformable({ dx: 1 })) {
-      this.#tetromino.position.x += 1;
-    }
+    this.#step({ dx: 1 });
   }
 
   moveLeft() {
-    if (this.#isTransformable({ dx: -1 })) {
-      this.#tetromino.position.x -= 1;
-    }
+    this.#step({ dx: -1 });
   }
 
   rotateRight() {
-    if (this.#isTransformable({ rotR: true })) {
-      this.#tetromino.rotateRight();
-    }
+    this.#step({ rotR: true });
   }
 
   rotateLeft() {
-    if (this.#isTransformable({ rotL: true })) {
-      this.#tetromino.rotateLeft();
-    }
+    this.#step({ rotL: true });
   }
 
-  // Transform 가능한지 판단
-  #isTransformable({ dx, dy, rotR, rotL }: Transform): boolean {
-    const target = this.#tetromino.duplicate();
+  #step(transform: Transform) {
+    if (this.#isAppliable(transform)) {
+      // transform 적용 가능하면 적용
+      this.#tetromino.transform(transform);
+    } else if (this.#checkIsTouched()) {
+      // 바닥에 닿은 경우, board에 적용하고 새로운 tetromino 생성
+      let pos = this.#tetromino.position;
+      this.#tetromino.matrix.forEach((x, y, val) => {
+        if (val > 0) this.#board.set(pos.x + x, pos.y + y, val);
+      });
+      this.#tetromino = this.#genNewTetromino();
+    }
+    this.#print();
+  }
 
-    // Apply transform
-    if (dx) target.position.x += dx;
-    if (dy) target.position.y += dy;
-    if (rotR) target.rotateRight();
-    if (rotL) target.rotateLeft();
+  // Transform 적용 가능한지 판단
+  #isAppliable(transform: Transform): boolean {
+    // Apply transform to clone
+    const target = this.#tetromino.duplicate();
+    target.transform(transform);
 
     // Check
     const matrix = target.matrix;
-    const { x: posX, y: posY } = target.position;
+    const pos = target.position;
 
     for (let y = 0; y < matrix.height; y++) {
       for (let x = 0; x < matrix.width; x++) {
@@ -92,16 +87,16 @@ export default class Tetris {
 
         // boundary check
         if (
-          posX + x < 0 ||
-          posX + x >= BOARD_W ||
-          posY + y < 0 ||
-          posY + y >= BOARD_H
+          pos.x + x < 0 ||
+          pos.x + x >= BOARD_W ||
+          pos.y + y < 0 ||
+          pos.y + y >= BOARD_H
         ) {
           return false;
         }
 
         // collision check
-        if (this.#board.get(posX + x, posY + y) > 0) {
+        if (this.#board.get(pos.x + x, pos.y + y) > 0) {
           return false;
         }
       }
@@ -110,19 +105,38 @@ export default class Tetris {
     return true;
   }
 
-  print() {
+  // Tetromino의 바닥면(아랫면)이 붙어있는지 체크
+  #checkIsTouched(): boolean {
+    const pos = this.#tetromino.position;
+
+    const floorCoords = this.#tetromino.findFloorCoords();
+    for (let { x, y } of floorCoords) {
+      // boundary check
+      if (pos.y + y + 1 === BOARD_H) return true;
+
+      // collision check
+      if (this.#board.get(pos.x + x, pos.y + y + 1) > 0) return true;
+    }
+
+    return false;
+  }
+
+  #genNewTetromino(): TetrominoBase {
+    const newOne = genTetromino(randomItem(allTypes));
+    newOne.position = {
+      // Board 중간에서 시작
+      x: Math.floor(BOARD_W / 2 - newOne.matrix.width / 2),
+      y: 0,
+    };
+    return newOne;
+  }
+
+  #print() {
     const newBoard = this.#board.duplicate();
-    const { x: posX, y: posY } = this.#tetromino.position;
+    const pos = this.#tetromino.position;
     this.#tetromino.matrix.forEach((x, y, val) => {
-      if (val > 0) newBoard.set(posX + x, posY + y, val);
+      if (val > 0) newBoard.set(pos.x + x, pos.y + y, val);
     });
     newBoard.print();
   }
 }
-
-type Transform = {
-  dx?: number;
-  dy?: number;
-  rotR?: boolean;
-  rotL?: boolean;
-};
