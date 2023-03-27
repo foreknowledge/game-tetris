@@ -3,9 +3,9 @@ import { TetrominoBase } from '../model/Tetromino';
 import { Transform } from '../type/coordinates.types';
 import { BOARD_H, BOARD_W } from './contstants';
 import {
-  checkIsTouched,
+  isBottomAttached,
   genNewTetromino,
-  isTransformAppliable,
+  isCollided,
   printBoard,
   sweepLines,
 } from './logics';
@@ -55,10 +55,14 @@ export default class Tetris {
   }
 
   #step(transform: Transform) {
-    if (isTransformAppliable(this.#board, this.#tetromino, transform)) {
+    // Apply transform to clone
+    const target = this.#tetromino.duplicate();
+    target.transform(transform);
+
+    if (!isCollided(this.#board, target)) {
       // transform 적용 가능하면 적용
       this.#tetromino.transform(transform);
-    } else if (checkIsTouched(this.#board, this.#tetromino)) {
+    } else if (isBottomAttached(this.#board, this.#tetromino)) {
       // 바닥에 닿은 경우,
 
       // 1. board에 적용
