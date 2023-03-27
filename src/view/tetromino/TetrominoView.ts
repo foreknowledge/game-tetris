@@ -26,25 +26,22 @@ export default class TetrominoView {
   }
 
   draw() {
-    const matrix = this.tetromino.getMatrix();
+    const matrix = this.tetromino.matrix;
 
     this.ctx.beginPath();
-    for (let j = 0; j < matrix.length; j++) {
-      const row = matrix[j];
-      for (let i = 0; i < row.length; i++) {
-        if (row[i] === 0) continue;
+    matrix.forEach((i, j, val) => {
+      if (val === 0) return;
 
-        const x = this.screenPos.x + i * this.unitSize;
-        const y = this.screenPos.y + j * this.unitSize;
+      const x = this.screenPos.x + i * this.unitSize;
+      const y = this.screenPos.y + j * this.unitSize;
 
-        this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(x, y, this.unitSize, this.unitSize);
-        this.ctx.fill();
+      this.ctx.fillStyle = this.color;
+      this.ctx.fillRect(x, y, this.unitSize, this.unitSize);
+      this.ctx.fill();
 
-        this.ctx.lineWidth = this.lineWidth;
-        this.ctx.strokeStyle = 'white';
-        this.ctx.strokeRect(x, y, this.unitSize, this.unitSize);
-      }
-    }
+      this.ctx.lineWidth = this.lineWidth;
+      this.ctx.strokeStyle = 'white';
+      this.ctx.strokeRect(x, y, this.unitSize, this.unitSize);
+    });
   }
 }
