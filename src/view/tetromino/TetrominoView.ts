@@ -1,5 +1,5 @@
 import { TetrominoBase } from '../../core/model/Tetromino';
-import { getColorFor } from './typeToStyle';
+import { getColorFor } from '../getColor';
 
 export default class TetrominoView {
   ctx: CanvasRenderingContext2D;
@@ -18,7 +18,7 @@ export default class TetrominoView {
     this.lineWidth = Math.floor(unitSize / 15);
 
     this.tetromino = tetromino;
-    this.color = getColorFor(tetromino.type);
+    this.color = getColorFor(tetromino.representNum);
   }
 
   draw() {

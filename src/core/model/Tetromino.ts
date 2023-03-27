@@ -5,6 +5,7 @@ import genTetromino from './TetrominoGenerator';
 
 export abstract class TetrominoBase {
   type: Type;
+  representNum: number = -1;
   matrix: Matrix = new Matrix([]);
 
   // tetromino의 좌상단 좌표
@@ -56,6 +57,7 @@ export abstract class TetrominoBase {
 }
 
 export class TetrominoZ extends TetrominoBase {
+  representNum = 1;
   matrix = new Matrix([
     [0, 0, 0],
     [1, 1, 0],
@@ -64,6 +66,7 @@ export class TetrominoZ extends TetrominoBase {
 }
 
 export class TetrominoL extends TetrominoBase {
+  representNum = 2;
   matrix = new Matrix([
     [0, 0, 2],
     [2, 2, 2],
@@ -72,6 +75,7 @@ export class TetrominoL extends TetrominoBase {
 }
 
 export class TetrominoO extends TetrominoBase {
+  representNum = 3;
   matrix = new Matrix([
     [3, 3],
     [3, 3],
@@ -79,6 +83,7 @@ export class TetrominoO extends TetrominoBase {
 }
 
 export class TetrominoS extends TetrominoBase {
+  representNum = 4;
   matrix = new Matrix([
     [0, 0, 0],
     [0, 4, 4],
@@ -87,6 +92,7 @@ export class TetrominoS extends TetrominoBase {
 }
 
 export class TetrominoI extends TetrominoBase {
+  representNum = 5;
   matrix = new Matrix([
     [0, 0, 0, 0],
     [0, 0, 0, 0],
@@ -96,6 +102,7 @@ export class TetrominoI extends TetrominoBase {
 }
 
 export class TetrominoJ extends TetrominoBase {
+  representNum = 6;
   matrix = new Matrix([
     [6, 0, 0],
     [6, 6, 6],
@@ -104,6 +111,7 @@ export class TetrominoJ extends TetrominoBase {
 }
 
 export class TetrominoT extends TetrominoBase {
+  representNum = 7;
   matrix = new Matrix([
     [0, 7, 0],
     [7, 7, 7],
