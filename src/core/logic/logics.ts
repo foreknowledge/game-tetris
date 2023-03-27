@@ -1,8 +1,6 @@
-import { randomItem } from '../../utils/random';
 import Matrix from '../model/Matrix';
 import { TetrominoBase } from '../model/Tetromino';
 import genTetromino from '../model/TetrominoGenerator';
-import { allTypes } from '../type/tetromino.types';
 import { BOARD_H, BOARD_W } from './contstants';
 
 /**
@@ -78,7 +76,7 @@ export function sweepLines(board: Matrix) {
 }
 
 export function genNewTetromino(): TetrominoBase {
-  const newOne = genTetromino(randomItem(allTypes));
+  const newOne = genTetromino();
   newOne.position = {
     // Board 중간에서 시작
     x: Math.floor(BOARD_W / 2 - newOne.matrix.width / 2),

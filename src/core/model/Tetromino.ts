@@ -7,11 +7,12 @@ export abstract class TetrominoBase {
   type: Type;
   matrix: Matrix = new Matrix([]);
 
-  // 외부에서 설정해 주는 값
-  position: Pos = { x: -1, y: -1 };
+  // tetromino의 좌상단 좌표
+  position: Pos;
 
-  constructor(type: Type) {
+  constructor(type: Type, pos: Pos) {
     this.type = type;
+    this.position = pos;
   }
 
   transform({ dx, dy, rotR, rotL }: Transform) {
@@ -30,9 +31,11 @@ export abstract class TetrominoBase {
   }
 
   duplicate(): TetrominoBase {
-    const newTetromino = genTetromino(this.type);
+    const newTetromino = genTetromino({
+      type: this.type,
+      pos: { ...this.position },
+    });
     newTetromino.matrix = this.matrix.duplicate();
-    newTetromino.position = { ...this.position };
 
     return newTetromino;
   }
