@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Button from '../../components/Button';
 
 const SC = {
   Container: styled.div`
@@ -30,15 +29,14 @@ const SC = {
     border: solid 4px white;
   `,
   GameStates: styled.div`
-    width: 100%;
+    min-width: 200px;
     margin-top: 2em;
   `,
   State: styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: var(--font-medium);
-    padding: 0 1em;
+    font-size: var(--font-small);
   `,
   Number: styled.span`
     flex: 1;
