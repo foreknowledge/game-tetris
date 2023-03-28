@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button';
-import Tetris from '../../core/logic/Tetris';
+import Tetris, { GameState, INITIAL_STATE } from '../../core/logic/Tetris';
 import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
@@ -14,15 +14,13 @@ const Game = ({ onBtnBack }: GameProps) => {
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();
 
-  const [lines, setLines] = useState<number>(0);
+  const [gameState, setGameState] = useState<GameState>({ ...INITIAL_STATE });
 
   useEffect(() => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
     if (!gameCanvas || !previewCanvas) {
       addKeyEventListener(tetris);
-      tetris.onGameStateChanged = ({ clearLines }) => {
-        setLines(clearLines);
-      };
+      tetris.onGameStateChanged = (state) => setGameState({ ...state });
       tetris.gameStart();
 
       gameCanvas = new GameCanvas(tetris);
@@ -49,8 +47,16 @@ const Game = ({ onBtnBack }: GameProps) => {
         <SC.PreviewCanvas id="preview-canvas" />
         <SC.GameStates>
           <SC.State>
+            <span>Level</span>
+            <SC.Number>{gameState.level}</SC.Number>
+          </SC.State>
+          <SC.State>
+            <span>Score</span>
+            <SC.Number>{gameState.score}</SC.Number>
+          </SC.State>
+          <SC.State>
             <span>Lines</span>
-            <SC.Number>{lines}</SC.Number>
+            <SC.Number>{gameState.lines}</SC.Number>
           </SC.State>
         </SC.GameStates>
       </SC.Section>
