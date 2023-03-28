@@ -1,17 +1,17 @@
+import { randomItem } from '../../utils/random';
 import Matrix from '../model/Matrix';
 import { TetrominoBase } from '../model/Tetromino';
+import genTetromino from '../model/TetrominoGenerator';
 import { Transform } from '../type/coordinates.types';
+import { allTypes, Type } from '../type/tetromino.types';
 import { BOARD_H, BOARD_W } from './contstants';
-import {
-  isBottomAttached,
-  genNewTetromino,
-  isCollided,
-  sweepLines,
-} from './logics';
+import { isBottomAttached, isCollided, sweepLines } from './logics';
 
 export default class Tetris {
+  #nextTetrominoType: Type = randomItem(allTypes);
+
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
-  tetromino: TetrominoBase = genNewTetromino();
+  tetromino: TetrominoBase = this.#genNewTetromino();
   speed = 1000;
   timerId?: number;
 
@@ -43,7 +43,7 @@ export default class Tetris {
     this.board = new Matrix(
       Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
     );
-    this.tetromino = genNewTetromino();
+    this.tetromino = this.#genNewTetromino();
   }
 
   moveDown() {
@@ -87,12 +87,29 @@ export default class Tetris {
       sweepLines(this.board);
 
       // 3. 새로운 tetromino 생성
-      this.tetromino = genNewTetromino();
+      this.tetromino = this.#genNewTetromino();
       if (isCollided(this.board, this.tetromino)) {
         // 기존 board와 충돌한 경우 게임 오버
         this.gameOver();
         return;
       }
     }
+  }
+
+  #genNewTetromino(): TetrominoBase {
+    // 다음 type으로 Tetromino 생성
+    const newOne = genTetromino({ type: this.#nextTetrominoType });
+    newOne.position = {
+      // Board 중간에서 시작
+      x: Math.floor(BOARD_W / 2 - newOne.matrix.width / 2),
+      y: 0,
+    };
+
+    // 다음 type 갱신 (Rule: 직전 type과 달라야 한다)
+    this.#nextTetrominoType = randomItem(
+      allTypes.filter((it) => it !== this.#nextTetrominoType)
+    );
+
+    return newOne;
   }
 }
