@@ -11,7 +11,7 @@ export default class Tetris {
   nextTetrominoType: Type = randomItem(allTypes);
 
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
-  tetromino: TetrominoBase = this.#genNewTetromino();
+  tetromino: TetrominoBase = this.genNewTetromino();
   speed = 1000;
   timerId?: number;
 
@@ -30,9 +30,8 @@ export default class Tetris {
     this.timerId = undefined;
   }
 
-  #gameOver() {
-    clearInterval(this.timerId);
-    this.timerId = undefined;
+  private gameOver() {
+    this.gamePause();
 
     this.onGameOver();
 
@@ -40,30 +39,30 @@ export default class Tetris {
     this.board = new Matrix(
       Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
     );
-    this.tetromino = this.#genNewTetromino();
+    this.tetromino = this.genNewTetromino();
   }
 
   moveDown() {
-    this.#step({ dy: 1 });
+    this.step({ dy: 1 });
   }
 
   moveRight() {
-    this.#step({ dx: 1 });
+    this.step({ dx: 1 });
   }
 
   moveLeft() {
-    this.#step({ dx: -1 });
+    this.step({ dx: -1 });
   }
 
   rotateRight() {
-    this.#step({ rotR: true });
+    this.step({ rotR: true });
   }
 
   rotateLeft() {
-    this.#step({ rotL: true });
+    this.step({ rotL: true });
   }
 
-  #step(transform: Transform) {
+  private step(transform: Transform) {
     // Apply transform to clone
     const target = this.tetromino.duplicate();
     target.transform(transform);
@@ -71,9 +70,11 @@ export default class Tetris {
     if (!isCollided(this.board, target)) {
       // transform 적용 가능하면 적용
       this.tetromino.transform(transform);
-    } else if (isBottomAttached(this.board, this.tetromino)) {
-      // 바닥에 닿은 경우,
+      return;
+    }
 
+    // 바닥에 닿은 경우,
+    if (isBottomAttached(this.board, this.tetromino)) {
       // 1. board에 적용
       let pos = this.tetromino.position;
       this.tetromino.matrix.forEach((x, y, val) => {
@@ -84,16 +85,16 @@ export default class Tetris {
       sweepLines(this.board);
 
       // 3. 새로운 tetromino 생성
-      this.tetromino = this.#genNewTetromino();
+      this.tetromino = this.genNewTetromino();
       if (isCollided(this.board, this.tetromino)) {
         // 기존 board와 충돌한 경우 게임 오버
-        this.#gameOver();
+        this.gameOver();
         return;
       }
     }
   }
 
-  #genNewTetromino(): TetrominoBase {
+  private genNewTetromino(): TetrominoBase {
     // 다음 type으로 Tetromino 생성
     const newOne = genTetromino({ type: this.nextTetrominoType });
     newOne.position = {
