@@ -15,6 +15,8 @@ export default class Tetris {
   speed = 1000;
   timerId?: number;
 
+  onGameOver = () => {};
+
   gameStart() {
     if (this.timerId) return;
 
@@ -28,16 +30,11 @@ export default class Tetris {
     this.timerId = undefined;
   }
 
-  gameOver() {
+  #gameOver() {
     clearInterval(this.timerId);
     this.timerId = undefined;
 
-    // Inform game is over.
-    console.log(`
-==========================
-    Game Over...
-==========================
-    `);
+    this.onGameOver();
 
     // Reset data
     this.board = new Matrix(
@@ -90,7 +87,7 @@ export default class Tetris {
       this.tetromino = this.#genNewTetromino();
       if (isCollided(this.board, this.tetromino)) {
         // 기존 board와 충돌한 경우 게임 오버
-        this.gameOver();
+        this.#gameOver();
         return;
       }
     }
