@@ -20,7 +20,7 @@ type Props = {
 // Type에 따라 Tetromino 데이터 인스턴스 생성
 export default function genTetromino({
   type = randomItem(allTypes),
-  pos = { x: -1, y: -1 },
+  pos = { x: 0, y: 0 },
 }: Props = {}): TetrominoBase {
   switch (type) {
     case 'Z':

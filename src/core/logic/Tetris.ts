@@ -8,7 +8,7 @@ import { BOARD_H, BOARD_W } from './contstants';
 import { isBottomAttached, isCollided, sweepLines } from './logics';
 
 export default class Tetris {
-  #nextTetrominoType: Type = randomItem(allTypes);
+  nextTetrominoType: Type = randomItem(allTypes);
 
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
   tetromino: TetrominoBase = this.#genNewTetromino();
@@ -95,7 +95,7 @@ export default class Tetris {
 
   #genNewTetromino(): TetrominoBase {
     // 다음 type으로 Tetromino 생성
-    const newOne = genTetromino({ type: this.#nextTetrominoType });
+    const newOne = genTetromino({ type: this.nextTetrominoType });
     newOne.position = {
       // Board 중간에서 시작
       x: Math.floor(BOARD_W / 2 - newOne.matrix.width / 2),
@@ -103,8 +103,8 @@ export default class Tetris {
     };
 
     // 다음 type 갱신 (Rule: 직전 type과 달라야 한다)
-    this.#nextTetrominoType = randomItem(
-      allTypes.filter((it) => it !== this.#nextTetrominoType)
+    this.nextTetrominoType = randomItem(
+      allTypes.filter((it) => it !== this.nextTetrominoType)
     );
 
     return newOne;

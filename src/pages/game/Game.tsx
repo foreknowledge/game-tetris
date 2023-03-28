@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
+import Button from '../../components/Button';
+import Tetris from '../../core/logic/Tetris';
 import GameCanvas from './canvas/GameCanvas';
+import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
 
 interface GameProps {
@@ -7,12 +10,18 @@ interface GameProps {
 }
 
 const Game = ({ onBtnBack }: GameProps) => {
+  let { current: tetris } = useRef<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
+  let { current: previewCanvas } = useRef<PreviewCanvas>();
 
   useEffect(() => {
-    if (!gameCanvas) {
-      // React.StrictMode에서도 인스턴스 한 번만 생성
-      gameCanvas = new GameCanvas();
+    // React.StrictMode에서도 인스턴스 한 번만 생성
+    if (!gameCanvas || !previewCanvas) {
+      addKeyEventListener(tetris);
+      tetris.gameStart();
+
+      gameCanvas = new GameCanvas(tetris);
+      previewCanvas = new PreviewCanvas(tetris);
     }
   }, []);
 
@@ -25,10 +34,45 @@ const Game = ({ onBtnBack }: GameProps) => {
 
   return (
     <SC.Container>
-      <SC.GameCanvas id="game-canvas" />
-      <SC.BackButton onClick={handleBack}>{`< BACK`}</SC.BackButton>
+      <SC.Section>
+        <Button onClick={handleBack}>{`< BACK`}</Button>
+      </SC.Section>
+      <SC.Section>
+        <SC.GameCanvas id="game-canvas" />
+      </SC.Section>
+      <SC.Section>
+        <SC.PreviewCanvas id="preview-canvas" />
+      </SC.Section>
     </SC.Container>
   );
 };
 
 export default Game;
+
+function addKeyEventListener(tetris: Tetris) {
+  addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowLeft':
+        tetris.moveLeft();
+        break;
+      case 'ArrowRight':
+        tetris.moveRight();
+        break;
+      case 'ArrowDown':
+        tetris.moveDown();
+        break;
+      case 'ArrowUp':
+        tetris.rotateRight();
+        break;
+      case 'z' || 'Z':
+        tetris.rotateLeft();
+        break;
+      case 'Escape':
+        tetris.gamePause();
+        break;
+      case '1':
+        tetris.gameStart();
+        break;
+    }
+  });
+}
