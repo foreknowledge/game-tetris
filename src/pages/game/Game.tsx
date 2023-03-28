@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button';
 import Tetris from '../../core/logic/Tetris';
 import GameCanvas from './canvas/GameCanvas';
@@ -10,14 +10,19 @@ interface GameProps {
 }
 
 const Game = ({ onBtnBack }: GameProps) => {
-  let { current: tetris } = useRef<Tetris>(new Tetris());
+  const { current: tetris } = useRef<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();
+
+  const [lines, setLines] = useState<number>(0);
 
   useEffect(() => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
     if (!gameCanvas || !previewCanvas) {
       addKeyEventListener(tetris);
+      tetris.onGameStateChanged = ({ clearLines }) => {
+        setLines(clearLines);
+      };
       tetris.gameStart();
 
       gameCanvas = new GameCanvas(tetris);
@@ -42,6 +47,12 @@ const Game = ({ onBtnBack }: GameProps) => {
       </SC.Section>
       <SC.Section>
         <SC.PreviewCanvas id="preview-canvas" />
+        <SC.GameStates>
+          <SC.State>
+            <span>Lines</span>
+            <SC.Number>{lines}</SC.Number>
+          </SC.State>
+        </SC.GameStates>
       </SC.Section>
     </SC.Container>
   );

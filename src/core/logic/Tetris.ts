@@ -7,6 +7,10 @@ import { allTypes, Type } from '../type/tetromino.types';
 import { BOARD_H, BOARD_W } from './contstants';
 import { isBottomAttached, isCollided, sweepLines } from './logics';
 
+export type GameStates = {
+  clearLines: number;
+};
+
 export default class Tetris {
   nextTetrominoType: Type = randomItem(allTypes);
 
@@ -15,7 +19,10 @@ export default class Tetris {
   speed = 1000;
   timerId?: number;
 
+  private states: GameStates = { clearLines: 0 };
+
   onGameOver = () => {};
+  onGameStateChanged = (_: GameStates) => {};
 
   gameStart() {
     if (this.timerId) return;
@@ -40,6 +47,7 @@ export default class Tetris {
       Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
     );
     this.tetromino = this.genNewTetromino();
+    this.states = { clearLines: 0 };
   }
 
   moveDown() {
@@ -82,7 +90,11 @@ export default class Tetris {
       });
 
       // 2. 완성 된 라인 지우기
-      sweepLines(this.board);
+      const lines = sweepLines(this.board);
+      if (lines > 0) {
+        this.states.clearLines += lines;
+        this.onGameStateChanged({ ...this.states });
+      }
 
       // 3. 새로운 tetromino 생성
       this.tetromino = this.genNewTetromino();

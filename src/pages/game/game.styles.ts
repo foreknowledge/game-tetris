@@ -14,6 +14,7 @@ const SC = {
     height: 100%;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   `,
@@ -27,6 +28,21 @@ const SC = {
     width: 180px;
     height: 180px;
     border: solid 4px white;
+  `,
+  GameStates: styled.div`
+    width: 100%;
+    margin-top: 2em;
+  `,
+  State: styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-medium);
+    padding: 0 1em;
+  `,
+  Number: styled.span`
+    flex: 1;
+    direction: rtl;
   `,
 };
 

@@ -57,7 +57,8 @@ export function isBottomAttached(
 /**
  * [board]에서 완성된 라인 sweeping
  */
-export function sweepLines(board: Matrix) {
+export function sweepLines(board: Matrix): number {
+  let lines = 0;
   const compactData: number[][] = [];
 
   for (let y = BOARD_H - 1; y >= 0; y--) {
@@ -66,12 +67,15 @@ export function sweepLines(board: Matrix) {
       compactData.push([...line]);
     } else {
       board.setLine(y, Array(BOARD_W).fill(0));
+      lines++;
     }
   }
 
   for (let i = 0; i < compactData.length; i++) {
     board.setLine(BOARD_H - 1 - i, compactData[i]);
   }
+
+  return lines;
 }
 
 export function printBoard(board: Matrix, tetromino: TetrominoBase) {
