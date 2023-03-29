@@ -1,11 +1,11 @@
-import { randomItem } from '../../utils/random';
 import Matrix from '../model/Matrix';
 import { TetrominoBase } from '../model/Tetromino';
 import genTetromino from '../model/TetrominoGenerator';
 import { Transform } from '../type/coordinates.types';
-import { allTypes, Type } from '../type/tetromino.types';
+import { Type } from '../type/tetromino.types';
 import { BOARD_H, BOARD_W } from './contstants';
 import { isBottomAttached, isCollided, sweepLines } from './logics';
+import RandomGenerator from './RandomGenerator';
 
 export type GameState = {
   level: number;
@@ -15,7 +15,8 @@ export type GameState = {
 export const INITIAL_STATE = { level: 0, score: 0, lines: 0 };
 
 export default class Tetris {
-  nextTetrominoType: Type = randomItem(allTypes);
+  private randomGenerator = new RandomGenerator();
+  nextTetrominoType: Type = this.randomGenerator.next();
 
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
   tetromino: TetrominoBase = this.genNewTetromino();
@@ -118,10 +119,8 @@ export default class Tetris {
       y: 0,
     };
 
-    // 다음 type 갱신 (Rule: 직전 type과 달라야 한다)
-    this.nextTetrominoType = randomItem(
-      allTypes.filter((it) => it !== this.nextTetrominoType)
-    );
+    // 다음 type 갱신
+    this.nextTetrominoType = this.randomGenerator.next();
 
     return newOne;
   }

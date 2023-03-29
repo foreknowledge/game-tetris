@@ -1,4 +1,4 @@
-export function randomItem<T>(items: T[]) {
+export function randomItem<T>(items: readonly T[]) {
   return items[Math.floor(Math.random() * items.length)];
 }
 

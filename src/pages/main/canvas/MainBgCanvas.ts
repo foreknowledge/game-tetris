@@ -1,6 +1,5 @@
+import RandomGenerator from '../../../core/logic/RandomGenerator';
 import genTetromino from '../../../core/model/TetrominoGenerator';
-import { allTypes } from '../../../core/type/tetromino.types';
-import { randomItem } from '../../../utils/random';
 import TetrominoView from '../../../view/tetromino/TetrominoView';
 
 export default class MainBgCanvas {
@@ -8,6 +7,7 @@ export default class MainBgCanvas {
   ctx = this.canvas.getContext('2d')!;
 
   tetrominoViews: TetrominoView[] = [];
+  private randomGenerator = new RandomGenerator();
 
   constructor() {
     this.resize();
@@ -26,7 +26,7 @@ export default class MainBgCanvas {
   init() {
     this.tetrominoViews = [];
     for (let i = 0; i < 10; i++) {
-      const type = randomItem(allTypes);
+      const type = this.randomGenerator.next();
       const pos = {
         x: Math.random() * this.canvas.width,
         y: Math.random() * this.canvas.height,
