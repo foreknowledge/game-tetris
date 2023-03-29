@@ -60,6 +60,26 @@ export default class Tetris {
     if (applied) this.scoreBoard.softDrop();
   }
 
+  hardDrop() {
+    const hardDropDy = this.findHardDropDy();
+
+    const applied = this.action({ dy: hardDropDy });
+    // 적용된 경우, 점수에 반영
+    if (applied) this.scoreBoard.hardDrop(hardDropDy);
+  }
+
+  private findHardDropDy(): number {
+    const target = this.tetromino.duplicate();
+    let dy = 0;
+
+    while (!isBottomAttached(this.board, target)) {
+      target.transform({ dy: 1 });
+      dy++;
+    }
+
+    return dy;
+  }
+
   /**
    * 현재 Tetromino의 변환을 수행한다.
    * @param transform 어떻게 변환할지

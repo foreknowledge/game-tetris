@@ -81,6 +81,9 @@ function addKeyEventListener(tetris: Tetris) {
       case 'ArrowDown':
         tetris.softDrop();
         break;
+      case ' ':
+        tetris.hardDrop();
+        break;
       case 'ArrowUp':
         tetris.rotateRight();
         break;
