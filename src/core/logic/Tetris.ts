@@ -6,13 +6,8 @@ import { Type } from '../type/tetromino.types';
 import { BOARD_H, BOARD_W } from './contstants';
 import { isBottomAttached, isCollided, sweepLines } from './logics';
 import RandomGenerator from './RandomGenerator';
-
-export type GameState = {
-  level: number;
-  score: number;
-  lines: number;
-};
-export const INITIAL_STATE = { level: 0, score: 0, lines: 0 };
+import Scheduler from './Scheduler';
+import ScoreBoard from './ScoreBoard';
 
 export default class Tetris {
   private randomGenerator = new RandomGenerator();
@@ -20,25 +15,19 @@ export default class Tetris {
 
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
   tetromino: TetrominoBase = this.genNewTetromino();
-  speed = 1000;
-  timerId?: number;
 
-  private state: GameState = INITIAL_STATE;
+  scoreBoard = new ScoreBoard();
+  scheduler = new Scheduler(this.getCurrentSpeed());
 
   onGameOver = () => {};
-  onGameStateChanged = (_: GameState) => {};
 
   gameStart() {
-    if (this.timerId) return;
-
-    this.timerId = setInterval(() => {
-      this.moveDown();
-    }, this.speed);
+    this.scoreBoard.reset();
+    this.scheduler.start(() => this.moveDown());
   }
 
   gamePause() {
-    clearInterval(this.timerId);
-    this.timerId = undefined;
+    this.scheduler.pause();
   }
 
   private gameOver() {
@@ -51,7 +40,6 @@ export default class Tetris {
       Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
     );
     this.tetromino = this.genNewTetromino();
-    this.state = INITIAL_STATE;
   }
 
   moveDown() {
@@ -96,8 +84,8 @@ export default class Tetris {
       // 2. 완성 된 라인 지우기
       const lines = sweepLines(this.board);
       if (lines > 0) {
-        this.state.lines += lines;
-        this.onGameStateChanged({ ...this.state });
+        this.scoreBoard.clearLines(lines);
+        this.scheduler.changeSpeed(this.getCurrentSpeed());
       }
 
       // 3. 새로운 tetromino 생성
@@ -123,5 +111,10 @@ export default class Tetris {
     this.nextTetrominoType = this.randomGenerator.next();
 
     return newOne;
+  }
+
+  private getCurrentSpeed(): number {
+    const level = this.scoreBoard.state.level;
+    return 1000 - (level - 1) * 100;
   }
 }
