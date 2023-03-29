@@ -5,7 +5,7 @@ export default class MainBgCanvas {
   canvas = document.getElementById('main-bg-canvas') as HTMLCanvasElement;
   ctx = this.canvas.getContext('2d')!;
 
-  tetrominos: TetrominoView[] = [];
+  tetrominoViews: TetrominoView[] = [];
 
   constructor() {
     this.resize();
@@ -22,7 +22,7 @@ export default class MainBgCanvas {
   }
 
   init() {
-    this.tetrominos = [];
+    this.tetrominoViews = [];
     for (let i = 0; i < 10; i++) {
       const tetromino = genTetromino({
         pos: {
@@ -30,7 +30,7 @@ export default class MainBgCanvas {
           y: Math.random() * this.canvas.height,
         },
       });
-      this.tetrominos.push(new TetrominoView(this.ctx, tetromino, 30));
+      this.tetrominoViews.push(new TetrominoView(this.ctx, tetromino, 30));
     }
   }
 
@@ -38,8 +38,8 @@ export default class MainBgCanvas {
     // requestAnimationFrame(this.animate.bind(this));
     // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.tetrominos.forEach((tetromino) => {
-      tetromino.draw();
+    this.tetrominoViews.forEach((tetrominoView) => {
+      tetrominoView.draw();
     });
   }
 }
