@@ -22,7 +22,10 @@ export default class Tetris {
   onGameOver = () => {};
 
   start() {
-    this.scheduler.start(() => this.action({ dy: 1 }));
+    this.scheduler.start(() => {
+      this.checkAndDrop();
+      this.apply({ dy: 1 });
+    });
   }
 
   pause() {
@@ -39,23 +42,23 @@ export default class Tetris {
   }
 
   moveRight() {
-    this.action({ dx: 1 });
+    this.apply({ dx: 1 });
   }
 
   moveLeft() {
-    this.action({ dx: -1 });
+    this.apply({ dx: -1 });
   }
 
   rotateRight() {
-    this.action({ rotR: true });
+    this.apply({ rotR: true });
   }
 
   rotateLeft() {
-    this.action({ rotL: true });
+    this.apply({ rotL: true });
   }
 
   softDrop() {
-    const applied = this.action({ dy: 1 });
+    const applied = this.apply({ dy: 1 });
     // 적용된 경우, 점수에 반영
     if (applied) this.scoreBoard.softDrop();
   }
@@ -63,9 +66,12 @@ export default class Tetris {
   hardDrop() {
     const hardDropDy = this.findHardDropDy();
 
-    const applied = this.action({ dy: hardDropDy });
+    const applied = this.apply({ dy: hardDropDy });
     // 적용된 경우, 점수에 반영
     if (applied) this.scoreBoard.hardDrop(hardDropDy);
+
+    // 바로 내려놓기
+    this.checkAndDrop();
   }
 
   private findHardDropDy(): number {
@@ -83,44 +89,44 @@ export default class Tetris {
   /**
    * 현재 Tetromino의 변환을 수행한다.
    * @param transform 어떻게 변환할지
-   * @returns 변환이 적용되었는지 여부
+   * @returns 변환이 적용 되었는지 여부
    */
-  private action(transform: Transform): boolean {
+  private apply(transform: Transform): boolean {
     // Apply transform to clone
     const target = this.tetromino.duplicate();
     target.transform(transform);
 
-    if (!isCollided(this.board, target)) {
-      // transform 적용 가능하면 적용
-      this.tetromino.transform(transform);
-      return true;
+    // transform 적용 가능한지 확인
+    if (isCollided(this.board, target)) return false;
+
+    this.tetromino.transform(transform);
+
+    return true;
+  }
+
+  private checkAndDrop() {
+    // 바닥에 닿았는지 확인
+    if (!isBottomAttached(this.board, this.tetromino)) return;
+
+    // 1. board에 적용
+    let pos = this.tetromino.position;
+    this.tetromino.matrix.forEach((x, y, val) => {
+      if (val > 0) this.board.set(pos.x + x, pos.y + y, val);
+    });
+
+    // 2. 완성 된 라인 지우기
+    const lines = sweepLines(this.board);
+    if (lines > 0) {
+      this.scoreBoard.clearLines(lines);
+      this.scheduler.changeSpeed(this.getCurrentSpeed());
     }
 
-    // 바닥에 닿은 경우,
-    if (isBottomAttached(this.board, this.tetromino)) {
-      // 1. board에 적용
-      let pos = this.tetromino.position;
-      this.tetromino.matrix.forEach((x, y, val) => {
-        if (val > 0) this.board.set(pos.x + x, pos.y + y, val);
-      });
-
-      // 2. 완성 된 라인 지우기
-      const lines = sweepLines(this.board);
-      if (lines > 0) {
-        this.scoreBoard.clearLines(lines);
-        this.scheduler.changeSpeed(this.getCurrentSpeed());
-      }
-
-      // 3. 새로운 tetromino 생성
-      this.tetromino = this.genNewTetromino();
-      if (isCollided(this.board, this.tetromino)) {
-        // 기존 board와 충돌한 경우 게임 오버
-        this.gameOver();
-        return false;
-      }
+    // 3. 새로운 tetromino 생성
+    this.tetromino = this.genNewTetromino();
+    if (isCollided(this.board, this.tetromino)) {
+      // 기존 board와 충돌한 경우 게임 오버
+      this.gameOver();
     }
-
-    return false;
   }
 
   private genNewTetromino(): TetrominoBase {
