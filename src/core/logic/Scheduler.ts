@@ -1,17 +1,26 @@
 export default class Scheduler {
   private speed: number;
   private timerId?: number;
-  private callback = () => {};
+  private task?: () => void;
 
   constructor(speed: number) {
     this.speed = speed;
   }
 
-  start(callback: () => void) {
+  start(task: () => void) {
+    if (this.task) {
+      throw new Error('Scheduler has already started.');
+    }
+
     if (this.timerId) return;
 
-    this.callback = callback;
-    this.timerId = setInterval(() => this.callback(), this.speed);
+    this.task = task;
+    this.timerId = setInterval(() => task(), this.speed);
+  }
+
+  stop() {
+    this.pause();
+    this.task = undefined;
   }
 
   pause() {
@@ -19,12 +28,30 @@ export default class Scheduler {
     this.timerId = undefined;
   }
 
-  changeSpeed(speed: number) {
-    if (this.speed === speed) return;
+  resume() {
+    const task = this.task;
+    if (!task) {
+      throw new Error(
+        'No scheduler is running. Please start the scheduler first.'
+      );
+    }
 
+    if (this.timerId) return;
+    this.timerId = setInterval(() => task(), this.speed);
+  }
+
+  changeSpeed(speed: number) {
+    const task = this.task;
+    if (!task) {
+      throw new Error(
+        'No scheduler is running. Please start the scheduler first.'
+      );
+    }
+
+    if (this.speed === speed) return;
     clearInterval(this.timerId);
 
     this.speed = speed;
-    this.timerId = setInterval(() => this.callback(), this.speed);
+    this.timerId = setInterval(() => task(), this.speed);
   }
 }

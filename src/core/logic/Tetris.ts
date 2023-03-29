@@ -17,29 +17,25 @@ export default class Tetris {
   tetromino: TetrominoBase = this.genNewTetromino();
 
   scoreBoard = new ScoreBoard();
-  scheduler = new Scheduler(this.getCurrentSpeed());
+  private scheduler = new Scheduler(this.getCurrentSpeed());
 
   onGameOver = () => {};
 
-  gameStart() {
-    this.scoreBoard.reset();
+  start() {
     this.scheduler.start(() => this.moveDown());
   }
 
-  gamePause() {
+  pause() {
     this.scheduler.pause();
   }
 
+  resume() {
+    this.scheduler.resume();
+  }
+
   private gameOver() {
-    this.gamePause();
-
+    this.scheduler.stop();
     this.onGameOver();
-
-    // Reset data
-    this.board = new Matrix(
-      Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0))
-    );
-    this.tetromino = this.genNewTetromino();
   }
 
   moveDown() {

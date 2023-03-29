@@ -24,7 +24,7 @@ const Game = ({ onBtnBack }: GameProps) => {
     if (!gameCanvas || !previewCanvas) {
       addKeyEventListener(tetris);
       tetris.scoreBoard.onStateChanged = (state) => setScoreState({ ...state });
-      tetris.gameStart();
+      tetris.start();
 
       gameCanvas = new GameCanvas(tetris);
       previewCanvas = new PreviewCanvas(tetris);
@@ -88,10 +88,10 @@ function addKeyEventListener(tetris: Tetris) {
         tetris.rotateLeft();
         break;
       case 'Escape':
-        tetris.gamePause();
+        tetris.pause();
         break;
       case '1':
-        tetris.gameStart();
+        tetris.start();
         break;
     }
   });
