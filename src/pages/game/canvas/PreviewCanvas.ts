@@ -29,7 +29,7 @@ export default class PreviewCanvas {
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    const tetromino = genTetromino({ type: this.curType });
+    const tetromino = genTetromino(this.curType);
     const offset =
       this.canvas.width / 2 - (tetromino.matrix.width * this.unitSize) / 2;
     const tetrominoView = new TetrominoView(

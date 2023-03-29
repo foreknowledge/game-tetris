@@ -111,7 +111,7 @@ export default class Tetris {
 
   private genNewTetromino(): TetrominoBase {
     // 다음 type으로 Tetromino 생성
-    const newOne = genTetromino({ type: this.nextTetrominoType });
+    const newOne = genTetromino(this.nextTetrominoType);
     newOne.position = {
       // Board 중간에서 시작
       x: Math.floor(BOARD_W / 2 - newOne.matrix.width / 2),

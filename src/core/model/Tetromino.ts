@@ -32,10 +32,7 @@ export abstract class TetrominoBase {
   }
 
   duplicate(): TetrominoBase {
-    const newTetromino = genTetromino({
-      type: this.type,
-      pos: { ...this.position },
-    });
+    const newTetromino = genTetromino(this.type, { ...this.position });
     newTetromino.matrix = this.matrix.duplicate();
 
     return newTetromino;

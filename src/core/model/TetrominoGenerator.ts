@@ -1,3 +1,5 @@
+import { Pos } from '../type/coordinates.types';
+import { Type } from '../type/tetromino.types';
 import {
   TetrominoBase,
   TetrominoI,
@@ -8,20 +10,12 @@ import {
   TetrominoT,
   TetrominoZ,
 } from './Tetromino';
-import { allTypes, Type } from '../type/tetromino.types';
-import { randomItem } from '../../utils/random';
-import { Pos } from '../type/coordinates.types';
-
-type Props = {
-  type?: Type;
-  pos?: Pos;
-};
 
 // Type에 따라 Tetromino 데이터 인스턴스 생성
-export default function genTetromino({
-  type = randomItem(allTypes),
-  pos = { x: 0, y: 0 },
-}: Props = {}): TetrominoBase {
+export default function genTetromino(
+  type: Type,
+  pos: Pos = { x: 0, y: 0 }
+): TetrominoBase {
   switch (type) {
     case 'Z':
       return new TetrominoZ(type, pos);

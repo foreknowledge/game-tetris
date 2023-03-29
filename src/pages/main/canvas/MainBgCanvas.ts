@@ -1,4 +1,6 @@
 import genTetromino from '../../../core/model/TetrominoGenerator';
+import { allTypes } from '../../../core/type/tetromino.types';
+import { randomItem } from '../../../utils/random';
 import TetrominoView from '../../../view/tetromino/TetrominoView';
 
 export default class MainBgCanvas {
@@ -24,12 +26,12 @@ export default class MainBgCanvas {
   init() {
     this.tetrominoViews = [];
     for (let i = 0; i < 10; i++) {
-      const tetromino = genTetromino({
-        pos: {
-          x: Math.random() * this.canvas.width,
-          y: Math.random() * this.canvas.height,
-        },
-      });
+      const type = randomItem(allTypes);
+      const pos = {
+        x: Math.random() * this.canvas.width,
+        y: Math.random() * this.canvas.height,
+      };
+      const tetromino = genTetromino(type, pos);
       this.tetrominoViews.push(new TetrominoView(this.ctx, tetromino, 30));
     }
   }
