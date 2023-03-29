@@ -15,6 +15,7 @@ export default class Tetris {
 
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
   tetromino: TetrominoBase = this.genNewTetromino();
+  previewTetromino: TetrominoBase = this.createPreviewTetromino();
 
   scoreBoard = new ScoreBoard();
   private scheduler = new Scheduler(this.getCurrentSpeed());
@@ -64,26 +65,13 @@ export default class Tetris {
   }
 
   hardDrop() {
-    const hardDropDy = this.findHardDropDy();
-
-    const applied = this.apply({ dy: hardDropDy });
+    const dy = this.previewTetromino.position.y - this.tetromino.position.y;
+    const applied = this.apply({ dy });
     // 적용된 경우, 점수에 반영
-    if (applied) this.scoreBoard.hardDrop(hardDropDy);
+    if (applied) this.scoreBoard.hardDrop(dy);
 
     // 바로 내려놓기
     this.checkAndDrop();
-  }
-
-  private findHardDropDy(): number {
-    const target = this.tetromino.duplicate();
-    let dy = 0;
-
-    while (!isBottomAttached(this.board, target)) {
-      target.transform({ dy: 1 });
-      dy++;
-    }
-
-    return dy;
   }
 
   /**
@@ -100,6 +88,7 @@ export default class Tetris {
     if (isCollided(this.board, target)) return false;
 
     this.tetromino.transform(transform);
+    this.previewTetromino = this.createPreviewTetromino();
 
     return true;
   }
@@ -123,6 +112,7 @@ export default class Tetris {
 
     // 3. 새로운 tetromino 생성
     this.tetromino = this.genNewTetromino();
+    this.previewTetromino = this.createPreviewTetromino();
     if (isCollided(this.board, this.tetromino)) {
       // 기존 board와 충돌한 경우 게임 오버
       this.gameOver();
@@ -142,6 +132,16 @@ export default class Tetris {
     this.nextTetrominoType = this.randomGenerator.next();
 
     return newOne;
+  }
+
+  private createPreviewTetromino(): TetrominoBase {
+    const target = this.tetromino.duplicate();
+
+    while (!isBottomAttached(this.board, target)) {
+      target.transform({ dy: 1 });
+    }
+
+    return target;
   }
 
   private getCurrentSpeed(): number {

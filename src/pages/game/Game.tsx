@@ -94,7 +94,7 @@ function addKeyEventListener(tetris: Tetris) {
         tetris.pause();
         break;
       case '1':
-        tetris.start();
+        tetris.resume();
         break;
     }
   });

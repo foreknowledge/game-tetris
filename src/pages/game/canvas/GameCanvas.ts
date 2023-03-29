@@ -1,6 +1,7 @@
 import { BOARD_W } from '../../../core/logic/contstants';
 import Tetris from '../../../core/logic/Tetris';
 import BoardView from '../../../view/board/BoardView';
+import TetrominoPreview from '../../../view/tetromino/TetrominoPreview';
 import TetrominoView from '../../../view/tetromino/TetrominoView';
 import GridView from './GridView';
 
@@ -37,10 +38,17 @@ export default class GameCanvas {
     const boardView = new BoardView(this.ctx, this.tetris.board, this.unitSize);
     boardView.draw();
 
+    const tetrominoPreview = new TetrominoPreview(
+      this.ctx,
+      this.tetris.previewTetromino,
+      this.unitSize
+    );
+    tetrominoPreview.draw();
+
     const tetrominoView = new TetrominoView(
       this.ctx,
       this.tetris.tetromino,
-      this.canvas.width / BOARD_W
+      this.unitSize
     );
     tetrominoView.draw();
   }
