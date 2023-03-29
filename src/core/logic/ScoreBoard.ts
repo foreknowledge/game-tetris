@@ -39,6 +39,16 @@ export default class ScoreBoard {
     this.onStateChanged(this.state);
   }
 
+  softDrop() {
+    this.totalScore += 1;
+    this.onStateChanged(this.state);
+  }
+
+  hardDrop(cells: number) {
+    this.totalScore += cells * 2;
+    this.onStateChanged(this.state);
+  }
+
   private getScore(lines: number): number {
     if (lines === 1) return 100;
     if (lines === 2) return 300;

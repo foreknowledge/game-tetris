@@ -23,7 +23,7 @@ const Game = ({ onBtnBack }: GameProps) => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
     if (!gameCanvas || !previewCanvas) {
       addKeyEventListener(tetris);
-      tetris.scoreBoard.onStateChanged = (state) => setScoreState({ ...state });
+      tetris.scoreBoard.onStateChanged = (state) => setScoreState(state);
       tetris.start();
 
       gameCanvas = new GameCanvas(tetris);
@@ -79,7 +79,7 @@ function addKeyEventListener(tetris: Tetris) {
         tetris.moveRight();
         break;
       case 'ArrowDown':
-        tetris.moveDown();
+        tetris.softDrop();
         break;
       case 'ArrowUp':
         tetris.rotateRight();

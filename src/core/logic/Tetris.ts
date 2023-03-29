@@ -22,7 +22,7 @@ export default class Tetris {
   onGameOver = () => {};
 
   start() {
-    this.scheduler.start(() => this.moveDown());
+    this.scheduler.start(() => this.action({ dy: 1 }));
   }
 
   pause() {
@@ -38,27 +38,34 @@ export default class Tetris {
     this.onGameOver();
   }
 
-  moveDown() {
-    this.step({ dy: 1 });
-  }
-
   moveRight() {
-    this.step({ dx: 1 });
+    this.action({ dx: 1 });
   }
 
   moveLeft() {
-    this.step({ dx: -1 });
+    this.action({ dx: -1 });
   }
 
   rotateRight() {
-    this.step({ rotR: true });
+    this.action({ rotR: true });
   }
 
   rotateLeft() {
-    this.step({ rotL: true });
+    this.action({ rotL: true });
   }
 
-  private step(transform: Transform) {
+  softDrop() {
+    const applied = this.action({ dy: 1 });
+    // 적용된 경우, 점수에 반영
+    if (applied) this.scoreBoard.softDrop();
+  }
+
+  /**
+   * 현재 Tetromino의 변환을 수행한다.
+   * @param transform 어떻게 변환할지
+   * @returns 변환이 적용되었는지 여부
+   */
+  private action(transform: Transform): boolean {
     // Apply transform to clone
     const target = this.tetromino.duplicate();
     target.transform(transform);
@@ -66,7 +73,7 @@ export default class Tetris {
     if (!isCollided(this.board, target)) {
       // transform 적용 가능하면 적용
       this.tetromino.transform(transform);
-      return;
+      return true;
     }
 
     // 바닥에 닿은 경우,
@@ -89,9 +96,11 @@ export default class Tetris {
       if (isCollided(this.board, this.tetromino)) {
         // 기존 board와 충돌한 경우 게임 오버
         this.gameOver();
-        return;
+        return false;
       }
     }
+
+    return false;
   }
 
   private genNewTetromino(): TetrominoBase {
