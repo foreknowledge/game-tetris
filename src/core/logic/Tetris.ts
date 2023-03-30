@@ -146,6 +146,6 @@ export default class Tetris {
 
   private getCurrentSpeed(): number {
     const level = this.scoreBoard.state.level;
-    return 1000 - (level - 1) * 100;
+    return Math.max(1000 - level * 30, 200);
   }
 }
