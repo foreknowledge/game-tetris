@@ -38,6 +38,9 @@ const SC = {
     justify-content: space-between;
     font-size: var(--font-small);
   `,
+  Label: styled.span`
+    margin-right: 0.5em;
+  `,
   Number: styled.span`
     flex: 1;
     direction: rtl;

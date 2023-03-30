@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button';
 import { ScoreState } from '../../core/logic/ScoreBoard';
 import Tetris from '../../core/logic/Tetris';
+import useBestScore from '../../hooks/useBestScore';
 import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
@@ -18,12 +19,16 @@ const Game = ({ onBtnBack }: GameProps) => {
   const [scoreState, setScoreState] = useState<ScoreState>(
     tetris.scoreBoard.state
   );
+  const [bestScore, setBestScore] = useBestScore();
 
   useEffect(() => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
     if (!gameCanvas || !previewCanvas) {
       addKeyEventListener(tetris);
-      tetris.scoreBoard.onStateChanged = (state) => setScoreState(state);
+      tetris.scoreBoard.onStateChanged = (state) => {
+        setScoreState(state);
+        if (state.score > bestScore) setBestScore(state.score);
+      };
       tetris.start();
 
       gameCanvas = new GameCanvas(tetris);
@@ -50,15 +55,21 @@ const Game = ({ onBtnBack }: GameProps) => {
         <SC.PreviewCanvas id="preview-canvas" />
         <SC.GameStates>
           <SC.State>
-            <span>Level</span>
+            <SC.Label>Best Score</SC.Label>
+            <SC.Number>{bestScore}</SC.Number>
+          </SC.State>
+        </SC.GameStates>
+        <SC.GameStates>
+          <SC.State>
+            <SC.Label>Level</SC.Label>
             <SC.Number>{scoreState.level}</SC.Number>
           </SC.State>
           <SC.State>
-            <span>Score</span>
+            <SC.Label>Score</SC.Label>
             <SC.Number>{scoreState.score}</SC.Number>
           </SC.State>
           <SC.State>
-            <span>Lines</span>
+            <SC.Label>Lines</SC.Label>
             <SC.Number>{scoreState.lines}</SC.Number>
           </SC.State>
         </SC.GameStates>
