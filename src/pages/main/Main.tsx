@@ -1,11 +1,12 @@
 import Title from '../../components/Title';
+import GameStatus from '../../types/GameStatus';
 import SC from './main.styles';
 
 interface MainProps {
-  onGameStart: () => void;
+  setGameStatus: (status: GameStatus) => void;
 }
 
-const Main = ({ onGameStart }: MainProps) => {
+const Main = ({ setGameStatus }: MainProps) => {
   // let { current: bgCanvas } = useRef<MainBgCanvas>();
 
   // useEffect(() => {
@@ -32,7 +33,7 @@ const Main = ({ onGameStart }: MainProps) => {
           </Title>
         </SC.TitleArea>
         <SC.ButtonsArea>
-          <SC.Button onClick={onGameStart}>START</SC.Button>
+          <SC.Button onClick={() => setGameStatus('playing')}>START</SC.Button>
           {/* <SC.Button>HELP</SC.Button> */}
         </SC.ButtonsArea>
       </SC.Contents>

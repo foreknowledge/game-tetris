@@ -3,15 +3,16 @@ import Button from '../../components/Button';
 import { ScoreState } from '../../core/logic/ScoreBoard';
 import Tetris from '../../core/logic/Tetris';
 import useBestScore from '../../hooks/useBestScore';
+import GameStatus from '../../types/GameStatus';
 import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
 
 interface GameProps {
-  onBtnBack: () => void;
+  setGameStatus: (status: GameStatus) => void;
 }
 
-const Game = ({ onBtnBack }: GameProps) => {
+const Game = ({ setGameStatus }: GameProps) => {
   const { current: tetris } = useRef<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();
@@ -25,6 +26,7 @@ const Game = ({ onBtnBack }: GameProps) => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
     if (!gameCanvas || !previewCanvas) {
       addKeyEventListener(tetris);
+
       tetris.scoreBoard.onStateChanged = (state) => {
         setScoreState(state);
         if (state.score > bestScore) setBestScore(state.score);
@@ -38,9 +40,7 @@ const Game = ({ onBtnBack }: GameProps) => {
 
   const handleBack = () => {
     const answer = confirm('게임을 종료하시겠습니까?');
-    if (answer) {
-      onBtnBack();
-    }
+    if (answer) setGameStatus('idle');
   };
 
   return (
