@@ -17,11 +17,12 @@ export default class PreviewCanvas {
     this.canvas.width = this.canvas.offsetWidth;
     this.canvas.height = this.canvas.offsetHeight;
 
+    this.animate = this.animate.bind(this);
     this.animate();
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    requestAnimationFrame(this.animate);
 
     // Optimization - 다시 그릴 필요 없는 경우 pass
     if (this.curType === this.tetris.nextTetrominoType) return;

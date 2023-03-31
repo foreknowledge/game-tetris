@@ -10,8 +10,9 @@ export default class MainBgCanvas {
   private randomGenerator = new RandomGenerator();
 
   constructor() {
-    this.resize();
+    this.animate = this.animate.bind(this);
 
+    this.resize();
     window.addEventListener('resize', this.resize.bind(this));
   }
 
@@ -37,7 +38,7 @@ export default class MainBgCanvas {
   }
 
   animate() {
-    // requestAnimationFrame(this.animate.bind(this));
+    // requestAnimationFrame(this.animate);
     // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.tetrominoViews.forEach((tetrominoView) => {

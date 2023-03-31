@@ -26,11 +26,12 @@ export default class GameCanvas {
       this.canvas.height
     );
 
+    this.animate = this.animate.bind(this);
     this.animate();
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    requestAnimationFrame(this.animate);
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.gridView.draw();
