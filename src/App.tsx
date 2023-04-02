@@ -1,16 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Game from './pages/game/Game';
 import Main from './pages/main/Main';
 import GameStatus from './types/GameStatus';
+import GameStatusContext from './context/GameStatusContext';
 
 function App() {
-  const [status, setStatus] = useState<GameStatus>('idle');
+  const { gameStatus: status } = useContext(GameStatusContext);
 
-  return status === 'idle' ? (
-    <Main setGameStatus={setStatus} />
-  ) : (
-    <Game setGameStatus={setStatus} />
-  );
+  return status === 'idle' ? <Main /> : <Game />;
 }
 
 export default App;

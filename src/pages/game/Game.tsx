@@ -1,18 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button';
+import GameStatusContext from '../../context/GameStatusContext';
 import { ScoreState } from '../../core/logic/ScoreBoard';
 import Tetris from '../../core/logic/Tetris';
 import useBestScore from '../../hooks/useBestScore';
-import GameStatus from '../../types/GameStatus';
 import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
 
-interface GameProps {
-  setGameStatus: (status: GameStatus) => void;
-}
+const Game = () => {
+  const { setGameStatus } = useContext(GameStatusContext);
 
-const Game = ({ setGameStatus }: GameProps) => {
   const { current: tetris } = useRef<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();

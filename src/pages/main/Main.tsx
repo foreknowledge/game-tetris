@@ -1,12 +1,11 @@
+import { useContext } from 'react';
 import Title from '../../components/Title';
-import GameStatus from '../../types/GameStatus';
+import GameStatusContext from '../../context/GameStatusContext';
 import SC from './main.styles';
 
-interface MainProps {
-  setGameStatus: (status: GameStatus) => void;
-}
+const Main = () => {
+  const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
-const Main = ({ setGameStatus }: MainProps) => {
   // let { current: bgCanvas } = useRef<MainBgCanvas>();
 
   // useEffect(() => {
