@@ -20,6 +20,8 @@ export default class Tetris {
   scoreBoard = new ScoreBoard();
   private scheduler = new Scheduler(this.getCurrentSpeed());
 
+  private isPlaying = false;
+
   onGameOver = () => {};
 
   start() {
@@ -27,18 +29,22 @@ export default class Tetris {
       this.checkAndDrop();
       this.apply({ dy: 1 });
     });
+    this.isPlaying = true;
   }
 
   pause() {
     this.scheduler.pause();
+    this.isPlaying = false;
   }
 
   resume() {
     this.scheduler.resume();
+    this.isPlaying = true;
   }
 
   private gameOver() {
     this.scheduler.stop();
+    this.isPlaying = false;
     this.onGameOver();
   }
 
@@ -80,6 +86,8 @@ export default class Tetris {
    * @returns 변환이 적용 되었는지 여부
    */
   private apply(transform: Transform): boolean {
+    if (!this.isPlaying) return false;
+
     // Apply transform to clone
     const target = this.tetromino.duplicate();
     target.transform(transform);
@@ -94,6 +102,8 @@ export default class Tetris {
   }
 
   private checkAndDrop() {
+    if (!this.isPlaying) return;
+
     // 바닥에 닿았는지 확인
     if (!isBottomAttached(this.board, this.tetromino)) return;
 

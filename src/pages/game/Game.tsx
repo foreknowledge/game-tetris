@@ -9,7 +9,7 @@ import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
 
 const Game = () => {
-  const { setGameStatus } = useContext(GameStatusContext);
+  const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
   const { current: tetris } = useRef<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
@@ -22,19 +22,30 @@ const Game = () => {
 
   useEffect(() => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
-    if (!gameCanvas || !previewCanvas) {
-      addKeyEventListener(tetris);
+    if (gameCanvas && previewCanvas) return;
+    gameCanvas = new GameCanvas(tetris);
+    previewCanvas = new PreviewCanvas(tetris);
 
-      tetris.scoreBoard.onStateChanged = (state) => {
-        setScoreState(state);
-        if (state.score > bestScore) setBestScore(state.score);
-      };
-      tetris.start();
+    addKeyEventListener(tetris, () =>
+      setGameStatus((before) => {
+        if (before === 'playing') return 'paused';
+        if (before === 'paused') return 'playing';
+        return before;
+      })
+    );
 
-      gameCanvas = new GameCanvas(tetris);
-      previewCanvas = new PreviewCanvas(tetris);
-    }
+    tetris.scoreBoard.onStateChanged = (state) => {
+      setScoreState(state);
+      if (state.score > bestScore) setBestScore(state.score);
+    };
+    tetris.start();
   }, []);
+
+  useEffect(() => {
+    // 게임 상태에 맞춰 tetris 상태 변경
+    if (gameStatus === 'playing') tetris.resume();
+    else if (gameStatus === 'paused') tetris.pause();
+  }, [gameStatus]);
 
   return (
     <SC.Container>
@@ -64,7 +75,12 @@ const Game = () => {
             <SC.Number>{scoreState.lines}</SC.Number>
           </SC.State>
         </SC.GameStates>
-        <Button style={{ marginTop: '2em' }}>PAUSE</Button>
+        <Button
+          style={{ marginTop: '2em' }}
+          onClick={() => setGameStatus('paused')}
+        >
+          PAUSE
+        </Button>
       </SC.Section>
     </SC.Container>
   );
@@ -72,7 +88,7 @@ const Game = () => {
 
 export default Game;
 
-function addKeyEventListener(tetris: Tetris) {
+function addKeyEventListener(tetris: Tetris, togglePause: () => void) {
   addEventListener('keydown', (e) => {
     switch (e.key) {
       case 'ArrowLeft':
@@ -94,10 +110,7 @@ function addKeyEventListener(tetris: Tetris) {
         tetris.rotateLeft();
         break;
       case 'Escape':
-        tetris.pause();
-        break;
-      case '1':
-        tetris.resume();
+        togglePause();
         break;
     }
   });
