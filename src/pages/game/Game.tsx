@@ -36,16 +36,9 @@ const Game = () => {
     }
   }, []);
 
-  const handleBack = () => {
-    const answer = confirm('게임을 종료하시겠습니까?');
-    if (answer) setGameStatus('idle');
-  };
-
   return (
     <SC.Container>
-      <SC.Section>
-        <Button onClick={handleBack}>{`< BACK`}</Button>
-      </SC.Section>
+      <SC.Section />
       <SC.Section>
         <SC.GameCanvas id="game-canvas" />
       </SC.Section>
@@ -71,6 +64,7 @@ const Game = () => {
             <SC.Number>{scoreState.lines}</SC.Number>
           </SC.State>
         </SC.GameStates>
+        <Button style={{ marginTop: '2em' }}>PAUSE</Button>
       </SC.Section>
     </SC.Container>
   );

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Button = styled.button`
   display: block;
-  margin: auto;
+  margin: 0.1em auto;
   padding: 0.1em 1em;
 
   border: 5px solid var(--text-color);
