@@ -13,7 +13,7 @@ const useScoreboard = (initialState: ScoreState): ReturnType => {
   const [bestScore, setBestScore] = useBestScore();
 
   const setScoreState = (scoreState: ScoreState) => {
-    setScoreState(scoreState);
+    _setScoreState(scoreState);
     if (scoreState.score > bestScore) setBestScore(scoreState.score);
   };
 
