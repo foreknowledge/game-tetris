@@ -1,9 +1,8 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import Button from '../../components/Button';
 import GameStatusContext from '../../context/GameStatusContext';
-import { ScoreState } from '../../core/logic/ScoreBoard';
 import Tetris from '../../core/logic/Tetris';
-import useBestScore from '../../hooks/useBestScore';
+import useScoreboard from '../../hooks/useScoreboard';
 import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import SC from './game.styles';
@@ -15,10 +14,9 @@ const Game = () => {
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();
 
-  const [scoreState, setScoreState] = useState<ScoreState>(
+  const [scoreState, setScoreState, bestScore] = useScoreboard(
     tetris.scoreBoard.state
   );
-  const [bestScore, setBestScore] = useBestScore();
 
   useEffect(() => {
     // React.StrictMode에서도 인스턴스 한 번만 생성
@@ -34,10 +32,7 @@ const Game = () => {
       })
     );
 
-    tetris.scoreBoard.onStateChanged = (state) => {
-      setScoreState(state);
-      if (state.score > bestScore) setBestScore(state.score);
-    };
+    tetris.scoreBoard.onStateChanged = setScoreState;
     tetris.start();
   }, []);
 
