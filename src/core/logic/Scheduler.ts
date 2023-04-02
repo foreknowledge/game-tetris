@@ -8,11 +8,7 @@ export default class Scheduler {
   }
 
   start(task: () => void) {
-    if (this.task) {
-      throw new Error('Scheduler has already started.');
-    }
-
-    if (this.timerId) return;
+    clearInterval(this.timerId);
 
     this.task = task;
     this.timerId = setInterval(() => task(), this.speed);

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button';
 import GameStatusContext from '../../context/GameStatusContext';
 import Tetris from '../../core/logic/Tetris';
@@ -10,7 +10,7 @@ import SC from './game.styles';
 const Game = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
-  const { current: tetris } = useRef<Tetris>(new Tetris());
+  const [tetris] = useState<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();
 
@@ -19,22 +19,29 @@ const Game = () => {
   );
 
   useEffect(() => {
-    // React.StrictMode에서도 인스턴스 한 번만 생성
-    if (gameCanvas && previewCanvas) return;
+    // 캔버스 초기화
     gameCanvas = new GameCanvas(tetris);
     previewCanvas = new PreviewCanvas(tetris);
 
-    addKeyEventListener(tetris, () =>
+    // 테트리스 초기화
+    tetris.scoreBoard.onStateChanged = setScoreState;
+    tetris.start();
+
+    // 키보드 이벤트 설정
+    const keyEventListener = createKeyEventListener(tetris, () =>
       setGameStatus((before) => {
         if (before === 'playing') return 'paused';
         if (before === 'paused') return 'playing';
         return before;
       })
     );
+    addEventListener('keydown', keyEventListener);
 
-    tetris.scoreBoard.onStateChanged = setScoreState;
-    tetris.start();
-  }, []);
+    return () => {
+      // 키보드 이벤트 제거
+      removeEventListener('keydown', keyEventListener);
+    };
+  }, [tetris]);
 
   useEffect(() => {
     // 게임 상태에 맞춰 tetris 상태 변경
@@ -83,8 +90,8 @@ const Game = () => {
 
 export default Game;
 
-function addKeyEventListener(tetris: Tetris, togglePause: () => void) {
-  addEventListener('keydown', (e) => {
+function createKeyEventListener(tetris: Tetris, togglePause: () => void) {
+  return (e: KeyboardEvent) => {
     switch (e.key) {
       case 'ArrowLeft':
         tetris.moveLeft();
@@ -108,5 +115,5 @@ function addKeyEventListener(tetris: Tetris, togglePause: () => void) {
         togglePause();
         break;
     }
-  });
+  };
 }
