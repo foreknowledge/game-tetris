@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import Title from '../../components/Title';
+import Title from '../../components/atoms/Title';
 import GameStatusContext from '../../context/GameStatusContext';
 import SC from './main.styles';
 

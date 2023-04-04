@@ -6,7 +6,7 @@ import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import createKeyEventListener from './listener/createKeyEventListener';
 import Game from './presenter/Game';
-import PausedDialog from './presenter/PausedDialog';
+import PausedDialog from '../../components/organisms/PausedDialog';
 
 const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);

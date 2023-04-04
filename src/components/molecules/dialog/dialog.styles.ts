@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Button from '../Button';
-import Title from '../Title';
+import Button from '../../atoms/Button';
+import Title from '../../atoms/Title';
 
 const SC = {
   Container: styled.div`

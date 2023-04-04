@@ -1,4 +1,4 @@
-import Dialog from '../../../components/dialog/Dialog';
+import Dialog from '../molecules/dialog/Dialog';
 
 type Props = {
   onResume: () => void;
