@@ -4,14 +4,14 @@ import Tetris from '../../core/logic/Tetris';
 import useScoreboard from '../../hooks/useScoreboard';
 import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
-import Game from './presentation/Game';
 import createKeyEventListener from './listener/createKeyEventListener';
-import PauseDialog from '../../components/dialog/PauseDialog';
+import Game from './presentation/Game';
+import PausedDialog from './presentation/PausedDialog';
 
 const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
-  const [tetris] = useState<Tetris>(new Tetris());
+  const [tetris, setTetris] = useState<Tetris>(new Tetris());
   let { current: gameCanvas } = useRef<GameCanvas>();
   let { current: previewCanvas } = useRef<PreviewCanvas>();
 
@@ -52,8 +52,25 @@ const GameContainer = () => {
 
   return (
     <>
-      <Game bestScore={bestScore} scoreState={scoreState} />
-      {gameStatus === 'paused' && <PauseDialog />}
+      <Game
+        bestScore={bestScore}
+        scoreState={scoreState}
+        onPaused={() => setGameStatus('paused')}
+      />
+      {gameStatus === 'paused' && (
+        <PausedDialog
+          onResume={() => setGameStatus('playing')}
+          onRestart={() => {
+            setTetris(new Tetris());
+            setGameStatus('playing');
+          }}
+          onHelp={() => {}}
+          onQuit={() => {
+            const answer = confirm('게임을 종료하시겠습니까?');
+            if (answer) setGameStatus('idle');
+          }}
+        />
+      )}
     </>
   );
 };

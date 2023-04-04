@@ -1,16 +1,14 @@
-import { useContext } from 'react';
 import Button from '../../../components/Button';
 import { ScoreState } from '../../../core/logic/ScoreBoard';
 import SC from './game.styles';
-import GameStatusContext from '../../../context/GameStatusContext';
 
 export type GameProps = {
   bestScore: number;
   scoreState: ScoreState;
+  onPaused: () => void;
 };
 
-const Game = ({ bestScore, scoreState }: GameProps) => {
-  const { setGameStatus } = useContext(GameStatusContext);
+const Game = ({ bestScore, scoreState, onPaused }: GameProps) => {
   return (
     <SC.Container>
       <SC.Section />
@@ -39,10 +37,7 @@ const Game = ({ bestScore, scoreState }: GameProps) => {
             <SC.Number>{scoreState.lines}</SC.Number>
           </SC.State>
         </SC.GameStates>
-        <Button
-          style={{ marginTop: '2em' }}
-          onClick={() => setGameStatus('paused')}
-        >
+        <Button style={{ marginTop: '2em' }} onClick={onPaused}>
           PAUSE
         </Button>
       </SC.Section>
