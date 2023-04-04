@@ -1,4 +1,4 @@
-import Button from '../../../components/Button';
+import Button from '../../../components/atoms/Button';
 import { ScoreState } from '../../../core/logic/ScoreBoard';
 import SC from './game.styles';
 
