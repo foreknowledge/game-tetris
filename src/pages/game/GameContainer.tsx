@@ -6,6 +6,7 @@ import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import Game from './presentation/Game';
 import createKeyEventListener from './listener/createKeyEventListener';
+import PauseDialog from '../../components/dialog/PauseDialog';
 
 const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
@@ -49,7 +50,12 @@ const GameContainer = () => {
     else if (gameStatus === 'paused') tetris.pause();
   }, [gameStatus]);
 
-  return <Game bestScore={bestScore} scoreState={scoreState} />;
+  return (
+    <>
+      <Game bestScore={bestScore} scoreState={scoreState} />
+      {gameStatus === 'paused' && <PauseDialog />}
+    </>
+  );
 };
 
 export default GameContainer;
