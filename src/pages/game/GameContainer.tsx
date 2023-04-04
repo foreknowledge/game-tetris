@@ -12,17 +12,14 @@ const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
   const [tetris, setTetris] = useState<Tetris>(new Tetris());
-  let { current: gameCanvas } = useRef<GameCanvas>();
-  let { current: previewCanvas } = useRef<PreviewCanvas>();
-
   const [scoreState, setScoreState, bestScore] = useScoreboard(
     tetris.scoreBoard.state
   );
 
   useEffect(() => {
-    // 캔버스 초기화
-    gameCanvas = new GameCanvas(tetris);
-    previewCanvas = new PreviewCanvas(tetris);
+    // 캔버스 생성
+    new GameCanvas(tetris);
+    new PreviewCanvas(tetris);
 
     // 테트리스 초기화
     tetris.scoreBoard.onStateChanged = setScoreState;
