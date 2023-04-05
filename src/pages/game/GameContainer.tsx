@@ -7,6 +7,7 @@ import PreviewCanvas from './canvas/PreviewCanvas';
 import createKeyEventListener from './listener/createKeyEventListener';
 import Game from './presenter/Game';
 import PausedDialog from '../../components/organisms/PausedDialog';
+import HelpDialog from '../../components/organisms/HelpDialog';
 
 const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
@@ -15,6 +16,7 @@ const GameContainer = () => {
   const [scoreState, setScoreState, bestScore] = useScoreboard(
     tetris.scoreBoard.state
   );
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
     // 캔버스 생성
@@ -61,13 +63,14 @@ const GameContainer = () => {
             setTetris(new Tetris());
             setGameStatus('playing');
           }}
-          onHelp={() => {}}
+          onHelp={() => setShowHelp(true)}
           onQuit={() => {
             const answer = confirm('게임을 종료하시겠습니까?');
             if (answer) setGameStatus('idle');
           }}
         />
       )}
+      {showHelp && <HelpDialog onClose={() => setShowHelp(false)} />}
     </>
   );
 };
