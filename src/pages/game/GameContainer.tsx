@@ -8,6 +8,7 @@ import createKeyEventListener from './listener/createKeyEventListener';
 import Game from './presenter/Game';
 import PausedDialog from '../../components/organisms/PausedDialog';
 import HelpDialog from '../../components/organisms/HelpDialog';
+import GameOverDialog from '../../components/organisms/GameOverDialog';
 
 const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
@@ -25,6 +26,7 @@ const GameContainer = () => {
 
     // 테트리스 초기화
     tetris.scoreBoard.onStateChanged = setScoreState;
+    tetris.onGameOver = () => setGameStatus('over');
     tetris.start();
 
     // 키보드 이벤트 설정
@@ -49,6 +51,16 @@ const GameContainer = () => {
     else if (gameStatus === 'paused') tetris.pause();
   }, [gameStatus]);
 
+  const handleRestart = () => {
+    setTetris(new Tetris());
+    setGameStatus('playing');
+  };
+
+  const handleQuit = () => {
+    const answer = confirm('게임을 종료하시겠습니까?');
+    if (answer) setGameStatus('idle');
+  };
+
   return (
     <>
       <Game
@@ -59,15 +71,16 @@ const GameContainer = () => {
       {gameStatus === 'paused' && (
         <PausedDialog
           onResume={() => setGameStatus('playing')}
-          onRestart={() => {
-            setTetris(new Tetris());
-            setGameStatus('playing');
-          }}
+          onRestart={handleRestart}
           onHelp={() => setShowHelp(true)}
-          onQuit={() => {
-            const answer = confirm('게임을 종료하시겠습니까?');
-            if (answer) setGameStatus('idle');
-          }}
+          onQuit={handleQuit}
+        />
+      )}
+      {gameStatus === 'over' && (
+        <GameOverDialog
+          scoreState={scoreState}
+          onRestart={handleRestart}
+          onQuit={handleQuit}
         />
       )}
       {showHelp && <HelpDialog onClose={() => setShowHelp(false)} />}
