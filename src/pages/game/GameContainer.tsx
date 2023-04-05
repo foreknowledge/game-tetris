@@ -52,6 +52,8 @@ const GameContainer = () => {
     // 게임 상태에 맞춰 tetris 상태 변경
     if (gameStatus === 'playing') tetris.resume();
     else if (gameStatus === 'paused') tetris.pause();
+
+    if (gameStatus !== 'paused') setShowHelp(false);
   }, [gameStatus]);
 
   const handleRestart = () => {
