@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import Title from '../../components/atoms/Title';
+import HelpDialog from '../../components/organisms/HelpDialog';
 import GameStatusContext from '../../context/GameStatusContext';
 import SC from './main.styles';
-import HelpDialog from '../../components/organisms/HelpDialog';
 
 const Main = () => {
   const { setGameStatus } = useContext(GameStatusContext);

@@ -1,4 +1,7 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import GameOverDialog from '../../components/organisms/GameOverDialog';
+import HelpDialog from '../../components/organisms/HelpDialog';
+import PausedDialog from '../../components/organisms/PausedDialog';
 import GameStatusContext from '../../context/GameStatusContext';
 import Tetris from '../../core/logic/Tetris';
 import useScoreboard from '../../hooks/useScoreboard';
@@ -6,9 +9,6 @@ import GameCanvas from './canvas/GameCanvas';
 import PreviewCanvas from './canvas/PreviewCanvas';
 import createKeyEventListener from './listener/createKeyEventListener';
 import Game from './presenter/Game';
-import PausedDialog from '../../components/organisms/PausedDialog';
-import HelpDialog from '../../components/organisms/HelpDialog';
-import GameOverDialog from '../../components/organisms/GameOverDialog';
 
 const GameContainer = () => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);

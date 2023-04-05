@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import GameStatusContext from './GameStatusContext';
 import GameStatus from '../types/GameStatus';
+import GameStatusContext from './GameStatusContext';
 
 type Props = {
   children: React.ReactNode;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import SC from './dialog.styles';
-import Title from '../../atoms/Title';
 import Button from '../../atoms/Button';
+import Title from '../../atoms/Title';
+import SC from './dialog.styles';
 
 type Props = {
   style?: React.CSSProperties;
