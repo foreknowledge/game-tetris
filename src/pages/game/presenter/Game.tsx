@@ -1,4 +1,5 @@
 import Button from '../../../components/atoms/Button';
+import GameStates from '../../../components/organisms/GameStates';
 import { ScoreState } from '../../../core/logic/ScoreBoard';
 import SC from './game.styles';
 
@@ -16,28 +17,16 @@ const Game = ({ bestScore, scoreState, onPaused }: GameProps) => {
         <SC.GameCanvas id="game-canvas" />
       </SC.Section>
       <SC.Section>
-        <SC.PreviewCanvas id="preview-canvas" />
-        <SC.GameStates>
-          <SC.State>
-            <SC.Label>Best Score</SC.Label>
-            <SC.Number>{bestScore}</SC.Number>
-          </SC.State>
-        </SC.GameStates>
-        <SC.GameStates>
-          <SC.State>
-            <SC.Label>Level</SC.Label>
-            <SC.Number>{scoreState.level}</SC.Number>
-          </SC.State>
-          <SC.State>
-            <SC.Label>Score</SC.Label>
-            <SC.Number>{scoreState.score}</SC.Number>
-          </SC.State>
-          <SC.State>
-            <SC.Label>Lines</SC.Label>
-            <SC.Number>{scoreState.lines}</SC.Number>
-          </SC.State>
-        </SC.GameStates>
-        <Button style={{ marginTop: '2em' }} onClick={onPaused}>
+        <SC.PreviewCanvas id="preview-canvas" style={{ margin: '1em 0' }} />
+        <GameStates.Group>
+          <GameStates label="Best Score" score={bestScore} fontSize="small" />
+        </GameStates.Group>
+        <GameStates.Group>
+          <GameStates label="Level" score={scoreState.level} fontSize="small" />
+          <GameStates label="Score" score={scoreState.score} fontSize="small" />
+          <GameStates label="Lines" score={scoreState.lines} fontSize="small" />
+        </GameStates.Group>
+        <Button style={{ margin: '1em 0' }} onClick={onPaused}>
           PAUSE
         </Button>
       </SC.Section>

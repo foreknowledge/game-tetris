@@ -28,23 +28,6 @@ const SC = {
     height: 180px;
     border: solid 4px white;
   `,
-  GameStates: styled.div`
-    min-width: 200px;
-    margin-top: 2em;
-  `,
-  State: styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--font-small);
-  `,
-  Label: styled.span`
-    margin-right: 0.5em;
-  `,
-  Number: styled.span`
-    flex: 1;
-    direction: rtl;
-  `,
 };
 
 export default SC;
