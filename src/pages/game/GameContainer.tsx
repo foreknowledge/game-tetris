@@ -29,6 +29,9 @@ const GameContainer = () => {
     tetris.onGameOver = () => setGameStatus('over');
     tetris.start();
 
+    // 점수 초기화
+    setScoreState(tetris.scoreBoard.state);
+
     // 키보드 이벤트 설정
     const keyEventListener = createKeyEventListener(tetris, () =>
       setGameStatus((before) => {
