@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import Button from '../../atoms/Button';
-import Title from '../../atoms/Title';
 
 const SC = {
   Container: styled.div`
@@ -16,9 +14,9 @@ const SC = {
     justify-content: center;
     align-items: center;
   `,
-  Content: styled.main`
+  Content: styled.main<{ width?: string }>`
     min-width: 500px;
-    width: 30%;
+    width: ${(props) => props.width ?? '30%'};
     padding: 2em;
     border: 4px solid white;
     background: var(--primary-color);
@@ -26,13 +24,6 @@ const SC = {
     display: flex;
     align-items: center;
     flex-direction: column;
-  `,
-  Title: styled(Title)`
-    margin-bottom: 0.4em;
-  `,
-  Button: styled(Button)`
-    width: 250px;
-    margin: 0.3em 0em;
   `,
 };
 
