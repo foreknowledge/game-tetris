@@ -19,13 +19,13 @@ const HelpDialog = ({ onClose }: Props) => {
         <Keyboard style={{ marginRight: '10px' }}>
           <FontAwesomeIcon
             icon={faArrowUp}
-            style={{ transform: 'rotate(90deg)' }}
+            style={{ transform: 'rotate(-90deg)' }}
           />
         </Keyboard>
         <Keyboard>
           <FontAwesomeIcon
             icon={faArrowUp}
-            style={{ transform: 'rotate(-90deg)' }}
+            style={{ transform: 'rotate(90deg)' }}
           />
         </Keyboard>
       </KeyDescription>
