@@ -10,9 +10,6 @@ const Button = styled.button`
 
   font-size: var(--font-medium);
   color: var(--text-color);
-  background: none;
-
-  cursor: pointer;
 
   &:hover {
     color: var(--accent-color);
