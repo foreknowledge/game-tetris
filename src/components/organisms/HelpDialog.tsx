@@ -14,7 +14,7 @@ const HelpDialog = ({ onClose }: Props) => {
   return (
     <Dialog style={{ width: '70%', position: 'relative' }}>
       <CloseXmark onClick={onClose} icon={faCircleXmark} />
-      <Dialog.Title>Help</Dialog.Title>
+      <Dialog.Title>HELP</Dialog.Title>
       <KeyDescription description="Move left/right">
         <Keyboard style={{ marginRight: '10px' }}>
           <FontAwesomeIcon
