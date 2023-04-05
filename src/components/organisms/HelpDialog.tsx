@@ -61,4 +61,8 @@ const CloseXmark = styled(FontAwesomeIcon)`
   right: 0.7em;
   font-size: xxx-large;
   cursor: pointer;
+
+  &:hover {
+    color: var(--accent-color);
+  }
 `;
