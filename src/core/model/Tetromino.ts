@@ -23,12 +23,12 @@ export abstract class TetrominoBase {
     if (rotL) this.rotateLeft();
   }
 
-  rotateRight() {
-    this.matrix.rotateRight();
+  rotateRight(times: number = 1) {
+    this.matrix.rotateRight(times);
   }
 
-  rotateLeft() {
-    this.matrix.rotateLeft();
+  rotateLeft(times: number = 1) {
+    this.matrix.rotateLeft(times);
   }
 
   duplicate(): TetrominoBase {

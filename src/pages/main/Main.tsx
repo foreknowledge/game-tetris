@@ -1,26 +1,27 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Title from '../../components/atoms/Title';
 import HelpDialog from '../../components/organisms/HelpDialog';
 import GameStatusContext from '../../context/GameStatusContext';
+import MainBgCanvas from './canvas/MainBgCanvas';
 import SC from './main.styles';
 
 const Main = () => {
   const { setGameStatus } = useContext(GameStatusContext);
   const [showHelp, setShowHelp] = useState(false);
 
-  // let { current: bgCanvas } = useRef<MainBgCanvas>();
+  let { current: bgCanvas } = useRef<MainBgCanvas>();
 
-  // useEffect(() => {
-  //   if (!bgCanvas) {
-  //     // React.StrictMode에서도 인스턴스 한 번만 생성
-  //     bgCanvas = new MainBgCanvas();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!bgCanvas) {
+      // React.StrictMode에서도 인스턴스 한 번만 생성
+      bgCanvas = new MainBgCanvas();
+    }
+  }, []);
 
   return (
     <>
       <SC.Container>
-        {/* <SC.BgCanvas id="main-bg-canvas" /> */}
+        <SC.BgCanvas id="main-bg-canvas" />
         <SC.Contents>
           <SC.TitleArea>
             <Title style={{ position: 'relative', top: '50%' }}>

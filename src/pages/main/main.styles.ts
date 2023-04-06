@@ -16,7 +16,7 @@ const SC = {
   Contents: styled.section`
     min-width: 600px;
     height: 100%;
-    /* background-color: rgba(0, 0, 0, 0.5); */
+    background-color: rgba(0, 0, 0, 0.5);
   `,
   TitleArea: styled.div`
     height: 40%;
@@ -28,7 +28,7 @@ const SC = {
   Button: styled(Button)`
     width: 250px;
     margin-bottom: 0.5em;
-    background-color: var(--primary-color);
+    /* background-color: var(--primary-color); */
   `,
 };
 
