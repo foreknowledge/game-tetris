@@ -76,10 +76,10 @@ export default class MainBgCanvas extends CommonCanvas {
         }
 
         // y 속도: 화면에 가까울 수록 빠르게
-        const speed = 1.6;
+        const speed = 1.5;
         const dy = randomNumberInRange(
-          zIndex * speed - 0.5,
-          zIndex * speed + 0.5
+          zIndex * speed - 0.3,
+          zIndex * speed + 0.3
         );
 
         // item 생성
