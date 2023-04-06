@@ -1,9 +1,10 @@
 import Tetris from '../../../core/logic/Tetris';
 import genTetromino from '../../../core/model/TetrominoGenerator';
 import { Type } from '../../../core/type/tetromino.types';
+import CommonCanvas from '../../../view/canvas/CommonCanvas';
 import TetrominoView from '../../../view/tetromino/TetrominoView';
 
-export default class PreviewCanvas {
+export default class PreviewCanvas extends CommonCanvas {
   tetris: Tetris;
   curType?: Type;
 
@@ -12,6 +13,8 @@ export default class PreviewCanvas {
   unitSize = 36;
 
   constructor(tetris: Tetris) {
+    super();
+
     this.tetris = tetris;
 
     this.canvas.width = this.canvas.offsetWidth;
@@ -22,6 +25,8 @@ export default class PreviewCanvas {
   }
 
   animate() {
+    if (!this._isAnimating) return;
+
     requestAnimationFrame(this.animate);
 
     // Optimization - 다시 그릴 필요 없는 경우 pass

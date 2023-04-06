@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import GameOverDialog from '../../components/organisms/GameOverDialog';
 import HelpDialog from '../../components/organisms/HelpDialog';
 import PausedDialog from '../../components/organisms/PausedDialog';
@@ -19,10 +19,13 @@ const GameContainer = () => {
   );
   const [showHelp, setShowHelp] = useState(false);
 
+  let { current: gameCanvas } = useRef<GameCanvas>();
+  let { current: previewCanvas } = useRef<PreviewCanvas>();
+
   useEffect(() => {
     // 캔버스 생성
-    new GameCanvas(tetris);
-    new PreviewCanvas(tetris);
+    gameCanvas = new GameCanvas(tetris);
+    previewCanvas = new PreviewCanvas(tetris);
 
     // 테트리스 초기화
     tetris.scoreBoard.onStateChanged = setScoreState;
@@ -45,6 +48,12 @@ const GameContainer = () => {
     return () => {
       // 키보드 이벤트 제거
       removeEventListener('keydown', keyEventListener);
+
+      // 캔버스 지우기
+      gameCanvas?.stopAnimation();
+      gameCanvas = undefined;
+      previewCanvas?.stopAnimation();
+      previewCanvas = undefined;
     };
   }, [tetris]);
 

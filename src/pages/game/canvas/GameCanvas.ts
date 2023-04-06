@@ -1,11 +1,12 @@
 import { BOARD_W } from '../../../core/logic/contstants';
 import Tetris from '../../../core/logic/Tetris';
 import BoardView from '../../../view/board/BoardView';
+import CommonCanvas from '../../../view/canvas/CommonCanvas';
 import TetrominoPreview from '../../../view/tetromino/TetrominoPreview';
 import TetrominoView from '../../../view/tetromino/TetrominoView';
 import GridView from './GridView';
 
-export default class GameCanvas {
+export default class GameCanvas extends CommonCanvas {
   tetris: Tetris;
 
   canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
@@ -14,6 +15,8 @@ export default class GameCanvas {
   gridView: GridView;
 
   constructor(tetris: Tetris) {
+    super();
+
     this.tetris = tetris;
 
     this.canvas.width = this.canvas.offsetWidth;
@@ -31,6 +34,8 @@ export default class GameCanvas {
   }
 
   animate() {
+    if (!this._isAnimating) return;
+
     requestAnimationFrame(this.animate);
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 

@@ -12,10 +12,11 @@ const Main = () => {
   let { current: bgCanvas } = useRef<MainBgCanvas>();
 
   useEffect(() => {
-    if (!bgCanvas) {
-      // React.StrictMode에서도 인스턴스 한 번만 생성
-      bgCanvas = new MainBgCanvas();
-    }
+    bgCanvas = new MainBgCanvas();
+    return () => {
+      bgCanvas?.stopAnimation();
+      bgCanvas = undefined;
+    };
   }, []);
 
   return (

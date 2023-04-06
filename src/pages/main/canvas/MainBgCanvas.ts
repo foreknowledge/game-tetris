@@ -5,6 +5,7 @@ import {
   randomIntegerInRange,
   randomNumberInRange,
 } from '../../../utils/random';
+import CommonCanvas from '../../../view/canvas/CommonCanvas';
 import TetrominoView from '../../../view/tetromino/TetrominoView';
 
 type CanvasItem = {
@@ -22,7 +23,7 @@ const SPACE = 120; // 블럭이 겹치지 않게 만들 공간
 const ROTATE_THRESHOLD = 70;
 const Z_INDEX_COUNT = 5; // 블럭의 z-index 개수
 
-export default class MainBgCanvas {
+export default class MainBgCanvas extends CommonCanvas {
   canvas = document.getElementById('main-bg-canvas') as HTMLCanvasElement;
   ctx = this.canvas.getContext('2d')!;
 
@@ -30,6 +31,8 @@ export default class MainBgCanvas {
   private randomGenerator = new RandomGenerator();
 
   constructor() {
+    super();
+
     this.animate = this.animate.bind(this);
 
     this.resize();
@@ -94,6 +97,8 @@ export default class MainBgCanvas {
   }
 
   animate() {
+    if (!this._isAnimating) return;
+
     requestAnimationFrame(this.animate);
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
