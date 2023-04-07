@@ -1,35 +1,26 @@
 import { Pos } from '../type/coordinates.types';
 import { Type } from '../type/tetromino.types';
-import {
-  TetrominoBase,
-  TetrominoI,
-  TetrominoJ,
-  TetrominoL,
-  TetrominoO,
-  TetrominoS,
-  TetrominoT,
-  TetrominoZ,
-} from './Tetromino';
+import * as T from './Tetromino';
 
 // Type에 따라 Tetromino 데이터 인스턴스 생성
 export default function genTetromino(
   type: Type,
   pos: Pos = { x: 0, y: 0 }
-): TetrominoBase {
+): T.TetrominoBase {
   switch (type) {
     case 'Z':
-      return new TetrominoZ(type, pos);
+      return new T.TetrominoZ(type, pos);
     case 'L':
-      return new TetrominoL(type, pos);
+      return new T.TetrominoL(type, pos);
     case 'O':
-      return new TetrominoO(type, pos);
+      return new T.TetrominoO(type, pos);
     case 'S':
-      return new TetrominoS(type, pos);
+      return new T.TetrominoS(type, pos);
     case 'I':
-      return new TetrominoI(type, pos);
+      return new T.TetrominoI(type, pos);
     case 'J':
-      return new TetrominoJ(type, pos);
+      return new T.TetrominoJ(type, pos);
     case 'T':
-      return new TetrominoT(type, pos);
+      return new T.TetrominoT(type, pos);
   }
 }
