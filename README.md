@@ -36,10 +36,10 @@ https://ellie-play-tetris.netlify.app/ 에서 직접 플레이 해 보세요!
 
 ### 게임 시작, 일시정지, 도움말
 
-<video src="./resources/demo_1.mov" controls="controls" style="max-width: 600px;">
+<video src="https://user-images.githubusercontent.com/29790944/230858131-812a048e-eba1-4512-84ec-af6294f90593.mov" controls style="max-width: 600px;">
 </video>
 
 ### 게임 오버
 
-<video src="./resources/demo_2.mov" controls="controls" style="max-width: 600px;">
+<video src="https://user-images.githubusercontent.com/29790944/230858198-bb84d00f-2548-4620-bc80-ede713924ae1.mov" controls style="max-width: 600px;">
 </video>
