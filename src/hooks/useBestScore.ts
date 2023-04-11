@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { loadData, saveData } from '../store/storage';
+import { loadData, saveData } from '../utils/storage';
 
 const BEST_SCORE = 'tetris-best-score';
 
