@@ -1,5 +1,4 @@
-import RandomGenerator from '../../../core/logic/RandomGenerator';
-import genTetromino from '../../../core/model/TetrominoGenerator';
+import TetrominoGenerator from '../../../core/logic/TetrominoGenerator';
 import { Pos } from '../../../core/type/coordinates.types';
 import {
   randomIntegerInRange,
@@ -28,7 +27,7 @@ export default class MainBgCanvas extends CommonCanvas {
   ctx = this.canvas.getContext('2d')!;
 
   private canvasItems: CanvasItem[] = [];
-  private randomGenerator = new RandomGenerator();
+  private tetrominoGenerator = new TetrominoGenerator();
 
   constructor() {
     super();
@@ -124,7 +123,7 @@ export default class MainBgCanvas extends CommonCanvas {
   }
 
   private genRandomTetrominoView(zIndex: number, pos: Pos) {
-    const tetromino = genTetromino(this.randomGenerator.next());
+    const tetromino = this.tetrominoGenerator.next();
     tetromino.rotateRight(randomIntegerInRange(0, 4));
     // 블럭 크기: 앞에 있을 수록 크게
     const unitSize = 15 + zIndex * 5;

@@ -1,20 +1,12 @@
 import { Pos, Transform } from '../type/coordinates.types';
-import { Type } from '../type/tetromino.types';
 import Matrix from './Matrix';
-import genTetromino from './TetrominoGenerator';
 
 export abstract class TetrominoBase {
-  type: Type;
   representNum: number = -1;
   matrix: Matrix = new Matrix([]);
 
   // tetromino의 좌상단 좌표
-  position: Pos;
-
-  constructor(type: Type, pos: Pos) {
-    this.type = type;
-    this.position = pos;
-  }
+  position: Pos = { x: 0, y: 0 };
 
   transform({ dx, dy, rotR, rotL }: Transform) {
     if (dx) this.position.x += dx;
@@ -32,10 +24,12 @@ export abstract class TetrominoBase {
   }
 
   duplicate(): TetrominoBase {
-    const newTetromino = genTetromino(this.type, { ...this.position });
-    newTetromino.matrix = this.matrix.duplicate();
+    return this;
+  }
 
-    return newTetromino;
+  _copyProps(tetromino: TetrominoBase) {
+    tetromino.matrix = this.matrix.duplicate();
+    tetromino.position = { ...this.position };
   }
 
   findFloorCoords(): Pos[] {
@@ -60,6 +54,12 @@ export class TetrominoZ extends TetrominoBase {
     [1, 1, 0],
     [0, 1, 1],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoZ();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }
 
 export class TetrominoL extends TetrominoBase {
@@ -69,6 +69,12 @@ export class TetrominoL extends TetrominoBase {
     [2, 2, 2],
     [0, 0, 0],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoL();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }
 
 export class TetrominoO extends TetrominoBase {
@@ -77,6 +83,12 @@ export class TetrominoO extends TetrominoBase {
     [3, 3],
     [3, 3],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoO();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }
 
 export class TetrominoS extends TetrominoBase {
@@ -86,6 +98,12 @@ export class TetrominoS extends TetrominoBase {
     [0, 4, 4],
     [4, 4, 0],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoS();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }
 
 export class TetrominoI extends TetrominoBase {
@@ -96,6 +114,12 @@ export class TetrominoI extends TetrominoBase {
     [5, 5, 5, 5],
     [0, 0, 0, 0],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoI();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }
 
 export class TetrominoJ extends TetrominoBase {
@@ -105,6 +129,12 @@ export class TetrominoJ extends TetrominoBase {
     [6, 6, 6],
     [0, 0, 0],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoJ();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }
 
 export class TetrominoT extends TetrominoBase {
@@ -114,4 +144,10 @@ export class TetrominoT extends TetrominoBase {
     [7, 7, 7],
     [0, 0, 0],
   ]);
+
+  duplicate(): TetrominoBase {
+    const tetromino = new TetrominoT();
+    this._copyProps(tetromino);
+    return tetromino;
+  }
 }

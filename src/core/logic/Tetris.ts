@@ -1,20 +1,18 @@
 import Matrix from '../model/Matrix';
 import { TetrominoBase } from '../model/Tetromino';
-import genTetromino from '../model/TetrominoGenerator';
 import { Transform } from '../type/coordinates.types';
-import { Type } from '../type/tetromino.types';
 import { BOARD_H, BOARD_W } from './contstants';
 import { isBottomAttached, isCollided, sweepLines } from './logics';
-import RandomGenerator from './RandomGenerator';
+import TetrominoGenerator from './TetrominoGenerator';
 import Scheduler from './Scheduler';
 import ScoreBoard from './ScoreBoard';
 
 export default class Tetris {
-  private randomGenerator = new RandomGenerator();
-  nextTetrominoType: Type = this.randomGenerator.next();
+  private tetrominoGenerator = new TetrominoGenerator();
+  nextTetromino: TetrominoBase = this.tetrominoGenerator.next();
 
   board = new Matrix(Array.from(Array(BOARD_H), () => Array(BOARD_W).fill(0)));
-  tetromino: TetrominoBase = this.genNewTetromino();
+  tetromino: TetrominoBase = this.pickNextTetromino();
   previewTetromino: TetrominoBase = this.createPreviewTetromino();
 
   scoreBoard = new ScoreBoard();
@@ -120,8 +118,8 @@ export default class Tetris {
       this.scheduler.changeSpeed(this.getCurrentSpeed());
     }
 
-    // 3. 새로운 tetromino 생성
-    this.tetromino = this.genNewTetromino();
+    // 3. 다음 tetromino 가져오기
+    this.tetromino = this.pickNextTetromino();
     this.previewTetromino = this.createPreviewTetromino();
     if (isCollided(this.board, this.tetromino)) {
       // 기존 board와 충돌한 경우 게임 오버
@@ -129,19 +127,18 @@ export default class Tetris {
     }
   }
 
-  private genNewTetromino(): TetrominoBase {
-    // 다음 type으로 Tetromino 생성
-    const newOne = genTetromino(this.nextTetrominoType);
-    newOne.position = {
+  private pickNextTetromino(): TetrominoBase {
+    const next = this.nextTetromino;
+    next.position = {
       // Board 중간에서 시작
-      x: Math.floor(BOARD_W / 2 - newOne.matrix.width / 2),
+      x: Math.floor(BOARD_W / 2 - next.matrix.width / 2),
       y: 0,
     };
 
-    // 다음 type 갱신
-    this.nextTetrominoType = this.randomGenerator.next();
+    // 다음 tetromino 가져오기
+    this.nextTetromino = this.tetrominoGenerator.next();
 
-    return newOne;
+    return next;
   }
 
   private createPreviewTetromino(): TetrominoBase {
