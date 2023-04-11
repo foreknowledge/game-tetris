@@ -21,7 +21,9 @@ export default function createKeyEventListener(
       case 'ArrowUp':
         tetris.rotateRight();
         break;
-      case 'z' || 'Z':
+      case 'z':
+      case 'Z':
+      case 'ㅋ':
         tetris.rotateLeft();
         break;
       case 'Escape':
